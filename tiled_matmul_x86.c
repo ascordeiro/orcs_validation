@@ -5,17 +5,17 @@
 
 int main(int argc, char const *argv[]) {
     int size = atoi(argv[1]);
-    int v_size = (1024 * 1024 * size)/sizeof(int);
+    int v_size = (1024 * 1024 * size)/sizeof(float);
     int elem = sqrt (v_size);
     while (elem % 16 != 0) elem++;
     printf ("%d\n", elem);
         
-    int** A = (int**) malloc (sizeof (int*) * elem);
-    for (int x = 0; x < elem; x++) A[x] = (int*) malloc (sizeof(int) * elem);
-    int** B = (int**) malloc (sizeof (int*) * elem);
-    for (int x = 0; x < elem; x++) B[x] = (int*) malloc (sizeof(int) * elem);
-    int** C = (int**) malloc (sizeof (int*) * elem);
-    for (int x = 0; x < elem; x++) C[x] = (int*) malloc (sizeof(int) * elem);
+    float** A = (float**) malloc (sizeof (float*) * elem);
+    for (int x = 0; x < elem; x++) A[x] = (float*) malloc (sizeof(float) * elem);
+    float** B = (float**) malloc (sizeof (float*) * elem);
+    for (int x = 0; x < elem; x++) B[x] = (float*) malloc (sizeof(float) * elem);
+    float** C = (float**) malloc (sizeof (float*) * elem);
+    for (int x = 0; x < elem; x++) C[x] = (float*) malloc (sizeof(float) * elem);
 
     for (int x = 0; x < elem; x++){
         for (int y = 0; y < elem; y++){
@@ -51,21 +51,21 @@ int main(int argc, char const *argv[]) {
 
     /*for (int x = 0; x < elem; x++){
         for (int y = 0; y < elem; y++){
-            printf ("%d ", A[x][y]);
+            printf ("%lf ", A[x][y]);
         }
         printf ("\n");
     }
     printf ("--------------------------\n");
     for (int x = 0; x < elem; x++){
         for (int y = 0; y < elem; y++){
-            printf ("%d ", B[x][y]);
+            printf ("%lf ", B[x][y]);
         }
         printf ("\n");
     }
     printf ("--------------------------\n");
     for (int x = 0; x < elem; x++){
         for (int y = 0; y < elem; y++){
-            printf ("%d ", C[x][y]);
+            printf ("%lf ", C[x][y]);
         }
         printf ("\n");
     }*/

@@ -7,7 +7,7 @@ __v32s main(__v32s argc, char const *argv[]) {
     __v32s size = atoi(argv[1]);
 
     if (size != 0 && (size & (size - 1)) == 0) {
-        __v32s m_size = sqrt((1024 * 1024 * size) / sizeof(__v32s));
+        __v32s m_size = sqrt((1024 * 1024 * size) / sizeof(__v32f));
         __v32s n_vectors = ceil(((double)m_size/(double)VECTOR_SIZE));
         __v32f *matrix_a = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
         __v32f *matrix_b = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));

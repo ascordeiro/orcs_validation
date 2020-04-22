@@ -8,7 +8,7 @@
 int main(__v32s argc, char const *argv[]) {
     __v32u size = atoi(argv[1]);
     if (size != 0 && (size & (size - 1)) == 0){
-        __v32u v_size = (1024 * 1024 * size) / sizeof(__v32u);
+        __v32u v_size = (1024 * 1024 * size) / sizeof(__v32f);
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *vector_b = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *mul = (__v32f *)malloc(sizeof(__v32f) * v_size);
