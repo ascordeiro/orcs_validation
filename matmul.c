@@ -15,7 +15,7 @@ __v32s main(__v32s argc, char const *argv[]) {
         __v32f *aux_vec = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE * n_vectors);
         __v32f sum, partial_sum;
 
-        for (int x = 0; x < m_size*VECTOR_SIZE*n_vectors; x++){
+        /*for (int x = 0; x < m_size*VECTOR_SIZE*n_vectors; x++){
             matrix_a[x] = rand() % 10 + 1;
             matrix_b[x] = rand() % 10 + 1;
         }
@@ -29,7 +29,7 @@ __v32s main(__v32s argc, char const *argv[]) {
         for (int i = 0; i < m_size*VECTOR_SIZE*n_vectors; i++) {
             printf ("%.0f ", matrix_b[i]);
             //if (i != 0 && i % 512 == 0) printf ("\n");
-        }
+        }*/
         
         for (__v32s i = 0; i < m_size; ++i) {
             for (__v32s j = 0; j < m_size; ++j) {
@@ -46,11 +46,11 @@ __v32s main(__v32s argc, char const *argv[]) {
             }
         }
 
-        printf ("\n\nb: \n");
+        /*printf ("\n\nb: \n");
         for (int i = 0; i < m_size*VECTOR_SIZE*n_vectors; i++) {
             printf ("%.0f ", matrix_c[i]);
             //if (i != 0 && i % 512 == 0) printf ("\n");
-        }
+        }*/
 
         free(matrix_a);
         free(matrix_b);
