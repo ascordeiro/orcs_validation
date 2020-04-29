@@ -41,7 +41,7 @@ __v32s main(__v32s argc, char const *argv[]) {
                     partial_sum += sum;
                     //printf ("a: %p | b: %p | aux: %p\n", &matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                 }
-                matrix_c[(i * VECTOR_SIZE) + j] = partial_sum;
+                matrix_c[(i * m_size) + j] = partial_sum;
                 //printf ("C: %p\n", &matrix_c[(i * VECTOR_SIZE) + j]);
             }
         }
