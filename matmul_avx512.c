@@ -35,19 +35,19 @@ int main(int argc, char const *argv[]) {
 
         printf ("\n");*/
         
-        __m256 vec_a, vec_b, aux_vec;
+        __m512 vec_a, vec_b, aux_vec;
         for (int i = 0; i < m_size; ++i) {
             for (int j = 0; j < m_size; ++j) {
                 partial_sum = 0;
                 sum = 0;
                 for (int k = 0; k < n_vectors; ++k) {
-                    vec_a = _mm256_load_ps (&matrix_a[(i * 16 * n_vectors) + (k * 16)]);
+                    vec_a = _mm512_load_ps (&matrix_a[(i * 16 * n_vectors) + (k * 16)]);
                     //printf ("\nvec_a  : ");
                     //for (int i = 0; i < 16; i++) printf ("%.0f ", vec_a[i]);
-                    vec_b = _mm256_load_ps (&matrix_b[(j * 16 * n_vectors) + (k * 16)]);
+                    vec_b = _mm512_load_ps (&matrix_b[(j * 16 * n_vectors) + (k * 16)]);
                     //printf ("\nvec_b  : ");
                     //for (int i = 0; i < 16; i++) printf ("%.0f ", vec_b[i]);
-                    aux_vec = _mm256_mul_ps (vec_a, vec_b);
+                    aux_vec = _mm512_mul_ps (vec_a, vec_b);
                     //printf ("\naux_vec  : ");
                     //for (int i = 0; i < 16; i++) printf ("%.0f ", aux_vec[i]);
                     
