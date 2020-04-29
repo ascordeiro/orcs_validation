@@ -13,6 +13,7 @@ int main(int argc, char const *argv[]) {
     float* data_b = (float*) aligned_alloc (32, v_size*sizeof (float));
     //for (int x = 0; x < v_size; x++) data_a[x] = rand() % 10 + 1;
     int elem = sqrt (v_size);
+    while (elem % 16 != 0) elem++;
     /*for (int x = 0; x < elem; x++){
         for (int y = 0; y < elem; y++){
             printf ("%.0f ", data_a[x+y]);
