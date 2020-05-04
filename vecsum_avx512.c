@@ -14,10 +14,10 @@ int main(int argc, char const *argv[]) {
     float* data_b = (float*) aligned_alloc (32, v_size*sizeof (float));
     float* data_c = (float*) aligned_alloc (32, v_size*sizeof (float));
     //srand (time(NULL));
-    for (int x = 0; x < v_size; x++){
+    /*for (int x = 0; x < v_size; x++){
         data_a[x] = rand() % 10 + 1;
         data_b[x] = rand() % 10 + 1;
-    }
+    }*/
     /*for (int x = 0; x < v_size; x++) printf ("%f ", data_a[x]);
     printf ("\n");
     for (int x = 0; x < v_size; x++) printf ("%f ", data_b[x]);
