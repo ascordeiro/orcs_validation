@@ -60,11 +60,11 @@ int main(int argc, char const *argv[]) {
             }
         }
 
-        printf ("\n\nc: ");
+        /*printf ("\n\nc: ");
         for (int i = 0; i < m_size*8*n_vectors; i++) {
             if (i % m_size == 0) printf ("\n");
             printf ("%.0f ", matrix_c[i]);
-        }
+        }*/
 
         free(matrix_a);
         free(matrix_b);
