@@ -12,12 +12,12 @@ int main(__v32s argc, char const *argv[]) {
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *vector_b = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *mul = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        srand (time(NULL));
+        /*srand (time(NULL));
         for (int x = 0; x < v_size; x++){
             vector_a[x] = rand() % 10 + 1;
             vector_b[x] = rand() % 10 + 1;
             mul[x] = 2;
-         }
+        }*/
         int elem = sqrt (v_size);
         for (__v32u i = 0; i < v_size; i += VECTOR_SIZE) {
             _vim2K_fadds(&vector_a[i], &vector_a[i+elem-1], &vector_b[i]);

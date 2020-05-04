@@ -8,19 +8,19 @@ int main(int argc, char const *argv[]) {
 
     if (size != 0 && (size & (size - 1)) == 0) {
         int m_size = sqrt((1024 * 1024 * size) / sizeof(float));
-        while (m_size % 16 != 0) m_size++;
+        while (m_size % 128 != 0) m_size++;
         int n_vectors = ceil(((double) m_size/(double) 8));
         float *matrix_a = (float *) aligned_alloc(32, sizeof (float) * m_size * (8 * n_vectors));
         float *matrix_b = (float *) aligned_alloc(32, sizeof (float) * m_size * (8 * n_vectors));
         float *matrix_c = (float *) aligned_alloc(32, sizeof (float) * m_size * (8 * n_vectors));
         float sum, partial_sum;
 
-        /*printf ("%d \n", m_size);
+        printf ("%d \n", m_size);
 
         for (int x = 0; x < m_size*8*n_vectors; x++){
             matrix_a[x] = rand() % 10 + 1;
             matrix_b[x] = rand() % 10 + 1;
-        }*/
+        }
 
         /*printf ("a: \n");
         for (int i = 0; i < m_size*8*n_vectors; i++) {
@@ -60,11 +60,11 @@ int main(int argc, char const *argv[]) {
             }
         }
 
-        /*printf ("\n\nc: ");
+        printf ("\n\nc: ");
         for (int i = 0; i < m_size*8*n_vectors; i++) {
             if (i % m_size == 0) printf ("\n");
             printf ("%.0f ", matrix_c[i]);
-        }*/
+        }
 
         free(matrix_a);
         free(matrix_b);

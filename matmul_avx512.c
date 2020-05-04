@@ -8,7 +8,7 @@ int main(int argc, char const *argv[]) {
 
     if (size != 0 && (size & (size - 1)) == 0) {
         int m_size = sqrt((1024 * 1024 * size) / sizeof(float));
-        while (m_size % 16 != 0) m_size++;
+        while (m_size % 256 != 0) m_size++;
         int n_vectors = ceil(((double) m_size/(double) 16));
         float *matrix_a = (float *) aligned_alloc(32, sizeof (float) * m_size * (16 * n_vectors));
         float *matrix_b = (float *) aligned_alloc(32, sizeof (float) * m_size * (16 * n_vectors));
