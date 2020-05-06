@@ -15,14 +15,14 @@ int main(int argc, char const *argv[]) {
         float *matrix_c = (float *) aligned_alloc(32, sizeof (float) * m_size * (8 * n_vectors));
         float sum, partial_sum;
 
-        printf ("%d \n", m_size);
+        /*printf ("%d \n", m_size);
 
         for (int x = 0; x < m_size*8*n_vectors; x++){
             matrix_a[x] = rand() % 10 + 1;
             matrix_b[x] = rand() % 10 + 1;
         }
 
-        /*printf ("a: \n");
+        printf ("a: \n");
         for (int i = 0; i < m_size*8*n_vectors; i++) {
             if (i != 0 && i % m_size == 0) printf ("\n");
             printf ("%.0f ", matrix_a[i]);
@@ -38,7 +38,6 @@ int main(int argc, char const *argv[]) {
         __m256 vec_a, vec_b, aux_vec;
         for (int i = 0; i < m_size; ++i) {
             for (int j = 0; j < m_size; ++j) {
-                partial_sum = 0;
                 sum = 0;
                 for (int k = 0; k < n_vectors; ++k) {
                     vec_a = _mm256_load_ps (&matrix_a[(i * 8 * n_vectors) + (k * 8)]);
@@ -52,10 +51,10 @@ int main(int argc, char const *argv[]) {
                     //for (int i = 0; i < 8; i++) printf ("%.0f ", aux_vec[i]);
                     
                     for (int i = 0; i < 8; i++) sum += aux_vec[i];
-                    partial_sum += sum;
+                    //printf ("sum: %.0f ",  sum);
                     //printf ("a: %p | b: %p | aux: %p\n", &matrix_a[(i * 8 * n_vectors) + (k * 8)], &matrix_b[(j * 8 * n_vectors) + (k * 8)], &aux_vec[k * 8]);
                 }
-                matrix_c[(i * m_size) + j] = partial_sum;
+                matrix_c[(i * m_size) + j] = sum;
                 //printf ("\nmatrix_c[%d] = %.0f", (i*m_size)+j, matrix_c[(i * m_size) + j]);
             }
         }

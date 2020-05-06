@@ -38,7 +38,6 @@ int main(int argc, char const *argv[]) {
         __m512 vec_a, vec_b, aux_vec;
         for (int i = 0; i < m_size; ++i) {
             for (int j = 0; j < m_size; ++j) {
-                partial_sum = 0;
                 sum = 0;
                 for (int k = 0; k < n_vectors; ++k) {
                     vec_a = _mm512_load_ps (&matrix_a[(i * 16 * n_vectors) + (k * 16)]);
@@ -52,10 +51,9 @@ int main(int argc, char const *argv[]) {
                     //for (int i = 0; i < 16; i++) printf ("%.0f ", aux_vec[i]);
                     
                     for (int i = 0; i < 16; i++) sum += aux_vec[i];
-                    partial_sum += sum;
                     //printf ("a: %p | b: %p | aux: %p\n", &matrix_a[(i * 16 * n_vectors) + (k * 16)], &matrix_b[(j * 16 * n_vectors) + (k * 16)], &aux_vec[k * 16]);
                 }
-                matrix_c[(i * m_size) + j] = partial_sum;
+                matrix_c[(i * m_size) + j] = sum;
                 //printf ("\nmatrix_c[%d] = %.0f", (i*m_size)+j, matrix_c[(i * m_size) + j]);
             }
         }

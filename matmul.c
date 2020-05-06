@@ -1,7 +1,7 @@
 #include "../intrinsics/vima/vima.hpp"
 #include <math.h>
 
-#define VECTOR_SIZE 2048
+#define VECTOR_SIZE 64
 
 __v32s main(__v32s argc, char const *argv[]) {
     __v32s size = atoi(argv[1]);
@@ -37,20 +37,20 @@ __v32s main(__v32s argc, char const *argv[]) {
                 partial_sum = 0;
                 sum = 0;
                 for (__v32s k = 0; k < n_vectors; ++k) {
-                    _vim2K_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
-                    _vim2K_fcums(&aux_vec[k * VECTOR_SIZE], &sum);
+                    _vim64_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
+                    _vim64_fcums(&aux_vec[k * VECTOR_SIZE], &sum);
                     partial_sum += sum;
                     //printf ("a: %p | b: %p | aux: %p\n", &matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                 }
                 matrix_c[(i * m_size) + j] = partial_sum;
-                //printf ("C: %p\n", &matrix_c[(i * VECTOR_SIZE) + j]);
+                //printf ("C: %.0f\n", matrix_c[(i * VECTOR_SIZE) + j]);
             }
         }
 
         /*printf ("\n\nb: \n");
         for (int i = 0; i < m_size*VECTOR_SIZE*n_vectors; i++) {
+            if (i != 0 && i % 512 == 0) printf ("\n");
             printf ("%.0f ", matrix_c[i]);
-            //if (i != 0 && i % 512 == 0) printf ("\n");
         }*/
 
         free(matrix_a);
