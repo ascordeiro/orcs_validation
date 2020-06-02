@@ -26,6 +26,7 @@ int main(int argc, char const *argv[]) {
         vec_a = _mm256_load_ps (&data_a[i]);
         vec_b = _mm256_load_ps (&data_b[i]);
         vec_c = _mm256_add_ps(vec_a, vec_b);
+        _mm256_store_ps (&data_c[i], vec_c);
         /*printf("a: ");
         for (int x = 0; x < 8; x++) printf ("%f ", vec_a[x]);
         printf ("\n");
