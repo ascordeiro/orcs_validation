@@ -1,0 +1,6 @@
+matmul
+memset
+memreset
+memcpy
+stencil
+vecsum
