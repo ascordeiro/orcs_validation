@@ -12,6 +12,7 @@ __v32s main(__v32s argc, char const *argv[]) {
         for (__v32s i = 0; i < v_size; i += VECTOR_SIZE) {
             _vim2K_fadds(&vector_a[i], &vector_b[i], &vector_c[i]);
         }
+        printf ("%f ", vector_c[(int) v_size-1]);
     } else {
         printf("Error! Size is not power of two!\n");
         exit(1);
