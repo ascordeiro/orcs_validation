@@ -34,7 +34,7 @@ int main(int argc, char const *argv[]) {
         elem_b = _mm512_add_ps(elem_b, elem_a4);
         elem_b = _mm512_add_ps(elem_b, elem_a5);
         elem_b = _mm512_mul_ps(elem_b, mul);
-        _mm512_stream_ps (&data_b[i], elem_b);
+        _mm512_stream_ps (&data_b[i+elem], elem_b);
     }
     /*printf ("\n\n\n");
     for (int x = 0; x < elem; x++){

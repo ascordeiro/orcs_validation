@@ -12,29 +12,29 @@ int main(__v32s argc, char const *argv[]) {
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *vector_b = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *mul = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        /*srand (time(NULL));
-        for (int x = 0; x < v_size; x++){
+        srand (time(NULL));
+        /*for (int x = 0; x < v_size; x++){
             vector_a[x] = rand() % 10 + 1;
             vector_b[x] = rand() % 10 + 1;
             mul[x] = 2;
         }*/
         int elem = sqrt (v_size);
         for (__v32u i = 0; i < v_size; i += VECTOR_SIZE) {
-            _vim2K_fadds(&vector_a[i], &vector_a[i+elem-1], &vector_b[i]);
-            _vim2K_fadds(&vector_b[i], &vector_a[i+elem], &vector_b[i]);
-            _vim2K_fadds(&vector_b[i], &vector_a[i+elem+1], &vector_b[i]);
-            _vim2K_fadds(&vector_b[i], &vector_a[i+elem*2], &vector_b[i]);
-            _vim2K_fmuls(&vector_b[i], &mul[i], &vector_b[i]);
+            _vim2K_fadds(&vector_a[i], &vector_a[i+elem-1], &vector_b[i+elem]);
+            _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem], &vector_b[i+elem]);
+            _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem+1], &vector_b[i+elem]);
+            _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem*2], &vector_b[i+elem]);
+            _vim2K_fmuls(&vector_b[i+elem], &mul[i], &vector_b[i+elem]);
         }
         /*printf ("elem: %d\n", elem);
         for (int x = 0; x < v_size; x++){
             if (x % elem == 0) printf ("\n");
-            printf ("%lf ", vector_a[x]);
+            printf ("%.0lf ", vector_a[x]);
         }
         printf ("\n-------------------------\n");
         for (int x = 0; x < v_size; x++){
             if (x % elem == 0) printf ("\n");
-            printf ("%lf ", vector_b[x]);
+            printf ("%.0lf ", vector_b[x]);
         }*/
     } else {
         printf("Error! Size is not power of two!\n");
