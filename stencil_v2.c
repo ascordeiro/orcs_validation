@@ -38,10 +38,10 @@ int main(__v32s argc, char const *argv[]) {
         } else if (VECTOR_SIZE == 64){
             for (int j = 0; j < 256; j++){
                 for (__v32u i = elem; i < v_size; i += VECTOR_SIZE) {
-                    _vim64_fadds(&vector_a[i], &vector_a[i-elem], &vector_b[i]);
-                    _vim64_fadds(&vector_b[i], &vector_a[i+elem], &vector_b[i]);
+                    _vim64_fadds(&vector_a[i-elem], &vector_a[i-1], &vector_b[i]);
+                    _vim64_fadds(&vector_b[i], &vector_a[i], &vector_b[i]);
                     _vim64_fadds(&vector_b[i], &vector_a[i+1], &vector_b[i]);
-                    _vim64_fadds(&vector_b[i], &vector_a[i-1], &vector_b[i]);
+                    _vim64_fadds(&vector_b[i], &vector_a[i+elem], &vector_b[i]);
                     _vim64_fmuls(&vector_b[i], &mul[i], &vector_b[i]);
                 }
             }
