@@ -1,4 +1,4 @@
-#include "../intrinsics/vima/vima.hpp"
+#include "../../intrinsics/vima/vima.hpp"
 #include <math.h>
 
 __v32s main(__v32s argc, char const *argv[]) {

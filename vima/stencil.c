@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "../intrinsics/vima/vima.hpp"
+#include "../../intrinsics/vima/vima.hpp"
 
 #define VECTOR_SIZE 2048
 

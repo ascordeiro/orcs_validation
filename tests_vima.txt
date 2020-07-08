@@ -1,7 +1,0 @@
-matmul
-memset
-memreset
-memcpy
-stencil
-stencil_v2
-vecsum
