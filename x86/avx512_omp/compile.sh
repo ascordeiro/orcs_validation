@@ -8,15 +8,15 @@ COMP_FLAGS="-O2 -mavx2 -march=native -fopenmp"
 SIZES=(1 2 4 8 16 32 64)
 SIZES_MATMUL=(1 2 4 8)
 
-if [ ! -d "$CODE_HOME/exec" ]; then
-	mkdir -p "$CODE_HOME/exec"
-fi
-
-if [ ! -d "$CODE_HOME/traces" ]; then
-	mkdir -p "$CODE_HOME/traces"
-fi
-
 cd $CODE_HOME
+
+if [ ! -d "exec" ]; then
+	mkdir -p "exec"
+fi
+
+if [ ! -d "traces" ]; then
+	mkdir -p "traces"
+fi
 
 for i in *.c
 do 
