@@ -64,6 +64,8 @@ int main(int argc, char const *argv[]) {
             printf ("%.0f ", matrix_c[i]);
         }*/
 
+        printf ("%f\n", matrix_c[m_size-1]);
+
         free(matrix_a);
         free(matrix_b);
         free(matrix_c);

@@ -37,5 +37,7 @@ int main(int argc, char const *argv[]) {
         for (int x = 0; x < 16; x++) printf ("%f ", vec_c[x]);
         printf ("\n");*/
     }
+
+    printf ("%f\n", data_c[v_size-1]);
     return 0;
 }
