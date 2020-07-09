@@ -18,5 +18,7 @@ int main(int argc, char const *argv[]) {
         _mm512_store_si512 ((__m512i *) &data_a[i], vec_a);
     }
 
+    printf ("%d\n", data_a[v_size-1]);
+
     return 0;
 }

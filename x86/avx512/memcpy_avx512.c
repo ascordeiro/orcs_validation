@@ -18,5 +18,7 @@ int main(int argc, char const *argv[]) {
         vec_a = _mm512_load_si512 ((__m512i *) &data_a[i]);
         _mm512_stream_si512 ((__m512i *) &data_b[i], vec_a);
     }
+
+    printf ("%d\n", data_b[v_size-1]);
     return 0;
 }

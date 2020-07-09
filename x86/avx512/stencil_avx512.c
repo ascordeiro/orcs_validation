@@ -43,5 +43,7 @@ int main(int argc, char const *argv[]) {
         }
         printf ("\n");
     }*/
+
+    printf ("%f\n", data_b[v_size-1]);
     return 0;
 }

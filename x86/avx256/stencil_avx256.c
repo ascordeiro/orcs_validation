@@ -6,19 +6,12 @@
 int main(int argc, char const *argv[]) {
     int size = atoi(argv[1]);
     int v_size = size * size;
-    /*if (size != 0 && (size & (size - 1)) == 0) v_size = (1024 * 1024 * size) / sizeof(float);
-    else return 0;*/
     
     float* data_a = (float*) aligned_alloc (32, v_size*sizeof (float));
     float* data_b = (float*) aligned_alloc (32, v_size*sizeof (float));
-    for (int x = 0; x < v_size; x++) data_a[x] = rand() % 10 + 1;
+    
     int elem = sqrt (v_size);
-    //while (elem % 16 != 0) elem++;
-    for (int x = 0; x < v_size; x++){
-        if (x % elem == 0) printf ("\n"); 
-        printf ("%.0lf ", data_a[x]);
-    }
-    printf ("\n\n\n");
+    while (elem % 16 != 0) elem++;
     
     __m256 elem_a1, elem_a2, elem_a3, elem_a4, elem_a5, elem_b;
     __m256 mul = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0};
@@ -35,10 +28,8 @@ int main(int argc, char const *argv[]) {
         elem_b = _mm256_mul_ps(elem_b, mul);
         _mm256_stream_ps (&data_b[i+elem], elem_b);        
     }
+
+    printf ("%f\n", data_b[v_size-1]);
     
-    for (int x = 0; x < v_size; x++){
-        if (x % elem == 0) printf ("\n"); 
-        printf ("%.0lf ", data_b[x]);
-    }
     return 0;
 }

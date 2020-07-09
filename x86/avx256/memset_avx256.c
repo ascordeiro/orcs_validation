@@ -18,5 +18,7 @@ int main(int argc, char const *argv[]) {
         _mm256_store_si256 ((__m256i *) &data_a[i], vec_a);
     }
 
+    printf ("%d\n", data_a[v_size-1]);
+
     return 0;
 }

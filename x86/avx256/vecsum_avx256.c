@@ -13,29 +13,14 @@ int main(int argc, char const *argv[]) {
     float* data_a = (float*) aligned_alloc (32, v_size*sizeof (float));
     float* data_b = (float*) aligned_alloc (32, v_size*sizeof (float));
     float* data_c = (float*) aligned_alloc (32, v_size*sizeof (float));
-    //srand (time(NULL));
-    for (int x = 0; x < v_size; x++){
-        data_a[x] = rand() % 10 + 1;
-        data_b[x] = rand() % 10 + 1;
-    }
-    /*for (int x = 0; x < v_size; x++) printf ("%f ", data_a[x]);
-    printf ("\n");
-    for (int x = 0; x < v_size; x++) printf ("%f ", data_b[x]);
-    printf ("\n");*/
+     
     for (int i = 0; i < v_size; i += 8) {
         vec_a = _mm256_load_ps (&data_a[i]);
         vec_b = _mm256_load_ps (&data_b[i]);
         vec_c = _mm256_add_ps(vec_a, vec_b);
         _mm256_store_ps (&data_c[i], vec_c);
-        /*printf("a: ");
-        for (int x = 0; x < 8; x++) printf ("%f ", vec_a[x]);
-        printf ("\n");
-        printf("b: ");
-        for (int x = 0; x < 8; x++) printf ("%f ", vec_b[x]);
-        printf ("\n");
-        printf("c: ");
-        for (int x = 0; x < 8; x++) printf ("%f ", vec_c[x]);
-        printf ("\n");*/
     }
+
+    printf ("%f\n", data_c[v_size-1]);
     return 0;
 }
