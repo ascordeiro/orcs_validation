@@ -1,13 +1,13 @@
 #!/bin/bash
-HOME="/home/sairo/Experiment"
+HOME="/home/srsantos/Experiment"
 SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/x86/avx512_omp"
 TRACE_HOME=$HOME"/orcs_validation/x86/avx512_omp/traces"
 
 cd $CODE_HOME
 
-if [ ! -d "../resultados" ]; then
-	mkdir -p "../resultados"
+if [ ! -d "resultados" ]; then
+	mkdir -p "resultados"
 fi
 
 cd $TRACE_HOME

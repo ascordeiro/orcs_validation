@@ -17,6 +17,11 @@ __v32s main(__v32s argc, char const *argv[]) {
                 _vim2K_icpys(&vector_a[i], &vector_b[i]);
             }
         }
+
+        printf ("%d\n", vector_b[v_size-1]);
+
+        free (vector_a);
+        free (vector_b);
     } else {
         printf("Error! Size is not power of two!\n");
         exit(1);

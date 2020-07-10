@@ -51,6 +51,8 @@ __v32s main(__v32s argc, char const *argv[]) {
             } else printf ("VECTOR SIZE must be either 64 or 2048.\n");
         }
 
+        printf ("%f\n", matrix_c[m_size-1]);
+
         free(matrix_a);
         free(matrix_b);
         free(matrix_c);

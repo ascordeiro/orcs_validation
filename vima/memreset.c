@@ -10,6 +10,10 @@ __v32s main(__v32s argc, char const *argv[]) {
         for (__v32s i = 0; i < v_size; i += VECTOR_SIZE) {
             _vim2K_imovs(0, &vector[i]);
         }
+
+        printf ("%d\n", vector[v_size-1]);
+
+        free (vector);
     } else {
         printf("Error! Size is not power of two!\n");
         exit(1);

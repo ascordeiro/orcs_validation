@@ -19,6 +19,10 @@ __v32s main(__v32s argc, char const *argv[]) {
             }
         }
         printf ("%f ", vector_c[v_size-1]);
+
+        free (vector_a);
+        free (vector_b);
+        free (vector_c);
     } else {
         printf("Error! Size is not power of two!\n");
         exit(1);

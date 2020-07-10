@@ -20,5 +20,7 @@ int main(int argc, char const *argv[]) {
 
     printf ("%d\n", data_a[v_size-1]);
 
+    free (data_a);
+
     return 0;
 }

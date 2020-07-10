@@ -39,5 +39,9 @@ int main(int argc, char const *argv[]) {
     }
 
     printf ("%f\n", data_c[v_size-1]);
+    
+    free (data_a);
+    free (data_b);
+    free (data_c);
     return 0;
 }

@@ -11,7 +11,6 @@ int main(int argc, char const *argv[]) {
     else return 0;
 
     int* data_a = (int*) aligned_alloc (32, v_size*sizeof (int));
-    for (int i = 0; i < v_size; i++) data_a[i] = 5;
     int* data_b = (int*) aligned_alloc (32, v_size*sizeof (int));
     
     __m512i vec_a, vec_b;
@@ -26,5 +25,8 @@ int main(int argc, char const *argv[]) {
     }
 
     printf ("%d\n", data_b[v_size-1]);
+
+    free (data_a);
+    free (data_b);
     return 0;
 }

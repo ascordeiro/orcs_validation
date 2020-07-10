@@ -12,8 +12,8 @@ int main(__v32s argc, char const *argv[]) {
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *vector_b = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *mul = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        srand (time(NULL));
-        /*for (int x = 0; x < v_size; x++){
+        /*srand (time(NULL));
+        for (int x = 0; x < v_size; x++){
             vector_a[x] = rand() % 10 + 1;
             vector_b[x] = rand() % 10 + 1;
             mul[x] = 2;
@@ -36,6 +36,12 @@ int main(__v32s argc, char const *argv[]) {
             if (x % elem == 0) printf ("\n");
             printf ("%.0lf ", vector_b[x]);
         }*/
+
+        printf ("%f\n", vector_b[v_size-1]);
+
+        free (vector_a);
+        free (vector_b);
+        free (mul);
     } else {
         printf("Error! Size is not power of two!\n");
         exit(1);
