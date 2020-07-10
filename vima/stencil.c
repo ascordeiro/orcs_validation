@@ -19,12 +19,12 @@ int main(__v32s argc, char const *argv[]) {
             mul[x] = 2;
         }*/
         int elem = sqrt (v_size);
-        for (__v32u i = 0; i < v_size; i += VECTOR_SIZE) {
-            _vim2K_fadds(&vector_a[i], &vector_a[i+elem-1], &vector_b[i+elem]);
-            _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem], &vector_b[i+elem]);
-            _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem+1], &vector_b[i+elem]);
-            _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem*2], &vector_b[i+elem]);
-            _vim2K_fmuls(&vector_b[i+elem], &mul[i], &vector_b[i+elem]);
+        for (__v32u i = elem; i < v_size; i += VECTOR_SIZE) {
+            _vim2K_fadds(&vector_a[i], &vector_a[i-elem], &vector_b[i]);
+            _vim2K_fadds(&vector_b[i], &vector_a[i-1], &vector_b[i]);
+            _vim2K_fadds(&vector_b[i], &vector_a[i+1], &vector_b[i]);
+            _vim2K_fadds(&vector_b[i], &vector_a[i+elem], &vector_b[i]);
+            _vim2K_fmuls(&vector_b[i], &mul[i], &vector_b[i]);
         }
         /*printf ("elem: %d\n", elem);
         for (int x = 0; x < v_size; x++){
