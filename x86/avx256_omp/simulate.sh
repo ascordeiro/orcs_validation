@@ -1,21 +1,29 @@
 #!/bin/bash
-HOME="/home/sairo/Experiment"
+HOME="/home/srsantos/Experiment"
 SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/x86/avx256_omp"
 TRACE_HOME=$HOME"/orcs_validation/x86/avx256_omp/traces"
+THREADS=8
+CONFIG_FILE="configuration_files/sandy_bridge_8cores.cfg"
 
 cd $CODE_HOME
 
-if [ ! -d "../resultados" ]; then
-	mkdir -p "../resultados"
+if [ ! -d "resultados" ]; then
+	mkdir -p "resultados"
 fi
 
 cd $TRACE_HOME
 
-for i in *.tid0.stat.out.gz
+for i in *.${THREADS}t.tid0.stat.out.gz
 do 
     cd $SIM_HOME
     TRACE=${i%.tid0.stat.out.gz}
-    echo "nohup ./orcs -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -c configuration_files/sandy_bridge_8cores.cfg &> ${CODE_HOME}/resultados/${TRACE}.txt &"
-    nohup ./orcs -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -t ${TRACE_HOME}/${TRACE} -c configuration_files/sandy_bridge_8cores.cfg &> ${CODE_HOME}/resultados/${TRACE}.txt &
+    COUNTER=0
+    COMMAND="./orcs"
+    while [ $COUNTER -lt $THREADS ]; do
+        COMMAND=${COMMAND}' -t '${TRACE_HOME}/${TRACE}
+        let COUNTER=COUNTER+1
+    done
+    echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}.txt &"
+    nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}.txt &
 done
