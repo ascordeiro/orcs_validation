@@ -23,16 +23,16 @@ int main(int argc, char const *argv[]) {
         #pragma omp for schedule (dynamic)
         for (i = elem; i < v_size; i += 16) {
             elem_a1 = _mm512_load_ps (&data_a[i]);
-            elem_a2 = _mm512_loadu_ps (&data_a[i-elem]);
+            elem_a2 = _mm512_loadu_ps (&data_a[i+elem-1]);
             elem_a3 = _mm512_load_ps (&data_a[i+elem]);
-            elem_a4 = _mm512_loadu_ps (&data_a[i+1]);
-            elem_a5 = _mm512_loadu_ps (&data_a[i-1]);
+            elem_a4 = _mm512_loadu_ps (&data_a[i+elem+1]);
+            elem_a5 = _mm512_load_ps (&data_a[i+elem*2]);
             elem_b = _mm512_add_ps(elem_a1, elem_a2);
             elem_b = _mm512_add_ps(elem_b, elem_a3);
             elem_b = _mm512_add_ps(elem_b, elem_a4);
             elem_b = _mm512_add_ps(elem_b, elem_a5);
             elem_b = _mm512_mul_ps(elem_b, mul);
-            _mm512_stream_ps (&data_b[i], elem_b);        
+            _mm512_stream_ps (&data_b[i+elem], elem_b);        
         }
     }
 
