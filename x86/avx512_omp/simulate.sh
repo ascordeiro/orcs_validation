@@ -5,6 +5,7 @@ CODE_HOME=$HOME"/orcs_validation/x86/avx512_omp"
 TRACE_HOME=$HOME"/orcs_validation/x86/avx512_omp/traces"
 THREADS=8
 CONFIG_FILE="configuration_files/sandy_bridge_8cores.cfg"
+DATE_TIME=$(date '+%d%m%Y_%H%M%S');
 
 cd $CODE_HOME
 
@@ -24,6 +25,6 @@ do
         COMMAND=${COMMAND}' -t '${TRACE_HOME}/${TRACE}
         let COUNTER=COUNTER+1
     done
-    echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}.txt &"
-    nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}.txt &
+    echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt"
+    #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt
 done
