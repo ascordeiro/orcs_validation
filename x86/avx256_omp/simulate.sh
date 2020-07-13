@@ -1,6 +1,6 @@
 #!/bin/bash
 HOME="/home/srsantos/Experiment"
-SIM_HOME=$HOME"/OrCS"
+SIM_HOME=$HOME"/sinuca"
 CODE_HOME=$HOME"/orcs_validation/x86/avx256_omp"
 TRACE_HOME=$HOME"/orcs_validation/x86/avx256_omp/traces"
 THREADS=8
@@ -25,6 +25,9 @@ do
         COMMAND=${COMMAND}' -t '${TRACE_HOME}/${TRACE}
         let COUNTER=COUNTER+1
     done
-    echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt"
-    #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt
+
+    #if [[ ${TRACE} == matmul* ]]; then 
+        echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt"
+        #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt
+    #fi
 done
