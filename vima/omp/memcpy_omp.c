@@ -10,10 +10,15 @@ __v32s main(__v32s argc, char const *argv[]) {
         __v32s *vector_a = (__v32s *)malloc(sizeof(__v32s) * v_size);
         __v32s *vector_b = (__v32s *)malloc(sizeof(__v32s) * v_size);
         __v32s i;
-        #pragma omp parallel shared (vector_a, vector_b) shared (i)
+        int tid, start, finish;
+        #pragma omp parallel shared (vector_a, vector_b) private (i, tid, start, finish)
         {
+            int chunk_size = v_size / omp_get_num_threads();
+            tid = omp_get_thread_num();
+            start = tid*chunk_size;
+            finish = start + chunk_size;
             #pragma omp for schedule (dynamic)
-            for (i = 0; i < v_size; i += VECTOR_SIZE) {
+            for (i = start; i < finish; i += VECTOR_SIZE) {
                 _vim2K_icpys(&vector_a[i], &vector_b[i]);
             }
         }

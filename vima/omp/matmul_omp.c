@@ -21,11 +21,11 @@ __v32s main(__v32s argc, char const *argv[]) {
         #pragma omp parallel shared (matrix_a, matrix_b, matrix_c) private (i, j, k, sum, partial_sum)
         {
             if (VECTOR_SIZE == 64){
+                #pragma omp for schedule (dynamic)
                 for (i = 0; i < m_size; ++i) {
                     for (j = 0; j < m_size; ++j) {
                         partial_sum = 0;
                         sum = 0;
-                        #pragma omp for schedule (dynamic)
                         for (k = 0; k < n_vectors; ++k) {
                             _vim64_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                             _vim64_fcums(&aux_vec[k * VECTOR_SIZE], &sum);
@@ -35,11 +35,11 @@ __v32s main(__v32s argc, char const *argv[]) {
                     }
                 }
             } else if (VECTOR_SIZE == 2048){
+                #pragma omp for schedule (dynamic)
                 for (i = 0; i < m_size; ++i) {
                     for (j = 0; j < m_size; ++j) {
                         partial_sum = 0;
                         sum = 0;
-                        #pragma omp for schedule (dynamic)
                         for (k = 0; k < n_vectors; ++k) {
                             _vim2K_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                             _vim2K_fcums(&aux_vec[k * VECTOR_SIZE], &sum);
