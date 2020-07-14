@@ -17,11 +17,15 @@ int main(int argc, char const *argv[]) {
     
     __m512 elem_a1, elem_a2, elem_a3, elem_a4, elem_a5, elem_b;
     __m512 mul = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0};
-    int i = 0;
-    #pragma omp parallel shared (data_a, data_b, mul) private (i, elem_a1, elem_a2, elem_a3, elem_a4, elem_a5, elem_b)
+    int i, tid, start, finish;
+    #pragma omp parallel shared (data_a, data_b, mul) private (i, tid, start, finish, elem_a1, elem_a2, elem_a3, elem_a4, elem_a5, elem_b)
     {
+        int chunk_size = v_size / omp_get_num_threads();
+        tid = omp_get_thread_num();
+        start = tid*chunk_size;
+        finish = start + chunk_size;
         #pragma omp for schedule (static)
-        for (i = 0; i < v_size; i += 16) {
+        for (i = start; i < finish; i += 16) {
             elem_a1 = _mm512_load_ps (&data_a[i]);
             elem_a2 = _mm512_loadu_ps (&data_a[i+elem-1]);
             elem_a3 = _mm512_load_ps (&data_a[i+elem]);
