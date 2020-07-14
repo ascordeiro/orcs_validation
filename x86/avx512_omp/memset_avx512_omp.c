@@ -13,14 +13,11 @@ int main(int argc, char const *argv[]) {
     int* data_a = (int*) aligned_alloc (32, v_size*sizeof (int));
 
     __m512i vec_a;
-    int i, nthreads, chunk_size;
-
-    nthreads = omp_get_num_threads();
-    chunk_size = v_size/nthreads;
+    int i;
 
     #pragma omp parallel shared (data_a) private (i, vec_a)
     {
-        #pragma omp for schedule (static, chunk_size)
+        #pragma omp for schedule (static)
         for (i = 0; i < v_size; i += 16) {
             vec_a = _mm512_load_si512 ((__m512i *) &data_a[i]);
             vec_a = _mm512_set1_epi32(1);
@@ -29,8 +26,6 @@ int main(int argc, char const *argv[]) {
     }
 
     printf ("%d\n", data_a[v_size-1]);
-
-    free (data_a);
 
     return 0;
 }

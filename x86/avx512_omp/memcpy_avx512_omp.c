@@ -17,7 +17,7 @@ int main(int argc, char const *argv[]) {
     int i;
     #pragma omp parallel shared (data_a, data_b) private (vec_a, vec_b, i)
     {
-        #pragma omp for schedule (dynamic)
+        #pragma omp for schedule (static)
         for (i = 0; i < v_size; i += 16) {
             vec_a = _mm512_load_si512 ((__m512i *) &data_a[i]);
             _mm512_stream_si512 ((__m512i *) &data_b[i], vec_a);
@@ -26,7 +26,5 @@ int main(int argc, char const *argv[]) {
 
     printf ("%d\n", data_b[v_size-1]);
 
-    free (data_a);
-    free (data_b);
     return 0;
 }

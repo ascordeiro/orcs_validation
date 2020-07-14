@@ -21,7 +21,7 @@ __v32s main(__v32s argc, char const *argv[]) {
         #pragma omp parallel shared (matrix_a, matrix_b, matrix_c) private (i, j, k, sum, partial_sum)
         {
             if (VECTOR_SIZE == 64){
-                #pragma omp for schedule (dynamic)
+                #pragma omp for schedule (static)
                 for (i = 0; i < m_size; ++i) {
                     for (j = 0; j < m_size; ++j) {
                         partial_sum = 0;
@@ -35,7 +35,7 @@ __v32s main(__v32s argc, char const *argv[]) {
                     }
                 }
             } else if (VECTOR_SIZE == 2048){
-                #pragma omp for schedule (dynamic)
+                #pragma omp for schedule (static)
                 for (i = 0; i < m_size; ++i) {
                     for (j = 0; j < m_size; ++j) {
                         partial_sum = 0;

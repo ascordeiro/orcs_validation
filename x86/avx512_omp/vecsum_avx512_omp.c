@@ -16,14 +16,11 @@ int main(int argc, char const *argv[]) {
     float* data_c = (float*) aligned_alloc (32, v_size*sizeof (float));
     
     int i;
-    int tid, start, finish;
-    #pragma omp parallel shared (data_a, data_b, data_c) private (i, vec_a, vec_b, vec_c, tid, start, finish)
+    
+    #pragma omp parallel shared (data_a, data_b, data_c) private (i, vec_a, vec_b, vec_c)
     {
-        int chunk_size = v_size / omp_get_num_threads();
-        tid = omp_get_thread_num();
-        start = tid*chunk_size;
-        finish = start + chunk_size;
-        for (i = start; i < finish; i += 16) {
+        #pragma omp for schedule (static)
+        for (i = 0; i < v_size; i += 16) {
             vec_a = _mm512_load_ps (&data_a[i]);
             vec_b = _mm512_load_ps (&data_b[i]);
             vec_c = _mm512_add_ps(vec_a, vec_b);
@@ -32,9 +29,5 @@ int main(int argc, char const *argv[]) {
     }
 
     printf ("%f\n", data_c[v_size-1]);
-
-    free (data_a);
-    free (data_b);
-    free (data_c);
     return 0;
 }

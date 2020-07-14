@@ -18,7 +18,7 @@ int main(__v32s argc, char const *argv[]) {
 
         #pragma omp parallel shared (vector_a, vector_b) private (i)
         {
-            #pragma omp for
+            #pragma omp for schedule (static)
             for (i = 0; i < v_size; i += VECTOR_SIZE) {
                 _vim2K_fadds(&vector_a[i], &vector_a[i+elem-1], &vector_b[i+elem]);
                 _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem], &vector_b[i+elem]);

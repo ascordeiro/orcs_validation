@@ -12,7 +12,7 @@ __v32s main(__v32s argc, char const *argv[]) {
         
         #pragma omp parallel shared (vector) private (i)
         {
-            int chunk_size = v_size / omp_get_num_threads();
+            #pragma omp for schedule (static)
             for (i = 0; i < v_size; i += VECTOR_SIZE) {
                 _vim2K_imovs(0, &vector[i]);
             }
