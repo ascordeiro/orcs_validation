@@ -1,6 +1,6 @@
 #!/bin/bash
-HOME="/home/srsantos/Experiment"
-SIM_HOME=$HOME"/sinuca"
+HOME="/home/sairo/Experiment"
+SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/vima/omp"
 TRACE_HOME=$HOME"/orcs_validation/vima/omp/traces"
 THREADS=2
@@ -28,6 +28,6 @@ do
 
     #if [[ ${TRACE} == matmul* ]]; then 
         echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt"
-        #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt
+        nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt
     #fi
 done

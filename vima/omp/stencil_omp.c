@@ -16,15 +16,10 @@ int main(__v32s argc, char const *argv[]) {
         __v32u i;
         int elem = sqrt (v_size);
 
-        int tid, start, finish;
-        #pragma omp parallel shared (vector_a, vector_b) private (i, tid, start, finish)
+        #pragma omp parallel shared (vector_a, vector_b) private (i)
         {
-            int chunk_size = v_size / omp_get_num_threads();
-            tid = omp_get_thread_num();
-            start = tid*chunk_size;
-            finish = start + chunk_size;
-            #pragma omp for schedule (dynamic)
-            for (i = start; i < finish; i += VECTOR_SIZE) {
+            #pragma omp for
+            for (i = 0; i < v_size; i += VECTOR_SIZE) {
                 _vim2K_fadds(&vector_a[i], &vector_a[i+elem-1], &vector_b[i+elem]);
                 _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem], &vector_b[i+elem]);
                 _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem+1], &vector_b[i+elem]);
@@ -34,10 +29,6 @@ int main(__v32s argc, char const *argv[]) {
         }
 
         printf ("%f\n", vector_b[v_size-1]);
-
-        free (vector_a);
-        free (vector_b);
-        free (mul);
     } else {
         printf("Error! Size is not power of two!\n");
         exit(1);

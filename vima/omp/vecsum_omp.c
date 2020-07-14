@@ -12,15 +12,10 @@ __v32s main(__v32s argc, char const *argv[]) {
         __v32f *vector_c = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32s i;
 
-        int tid, start, finish;
-        #pragma omp parallel shared (vector_a, vector_b, vector_c) private (i, tid, start, finish)
+        #pragma omp parallel shared (vector_a, vector_b, vector_c) private (i)
         {
-            int chunk_size = v_size / omp_get_num_threads();
-            tid = omp_get_thread_num();
-            start = tid*chunk_size;
-            finish = start + chunk_size;
             #pragma omp for schedule (dynamic)
-            for (i = start; i < finish; i += VECTOR_SIZE) {
+            for (i = 0; i < v_size; i += VECTOR_SIZE) {
                 _vim2K_fadds(&vector_a[i], &vector_b[i], &vector_c[i]);
             }
         }

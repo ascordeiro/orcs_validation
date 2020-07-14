@@ -35,8 +35,6 @@ int main(int argc, char const *argv[]) {
         finish = start + chunk_size;
         #pragma omp for schedule (dynamic)
         for (i = start; i < finish; i += 8) {
-            printf ("devil town ");
-            if (i+elem >= v_size) continue;
             elem_a1 = _mm256_load_ps (&data_a[i]);
             elem_a2 = _mm256_loadu_ps (&data_a[i-elem]);
             elem_a3 = _mm256_load_ps (&data_a[i+elem]);
