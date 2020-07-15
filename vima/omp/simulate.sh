@@ -1,10 +1,11 @@
 #!/bin/bash
-HOME="/home/sairo/Experiment"
+HOME="/home/srsantos/Experiment"
 SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/vima/omp"
 TRACE_HOME=$HOME"/orcs_validation/vima/omp/traces"
 THREADS=2
-CONFIG_FILE="configuration_files/sandy_vima_8192_2cores.cfg"
+VECTOR_SIZE=(256B 8K)
+CACHE_SIZE=(32 64 128 256)
 DATE_TIME=$(date '+%d%m%Y_%H%M%S');
 
 cd $CODE_HOME
@@ -26,8 +27,15 @@ do
         let COUNTER=COUNTER+1
     done
 
-    #if [[ ${TRACE} == matmul* ]]; then 
-        echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt"
-        nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt
-    #fi
+    for j in "${VECTOR_SIZE[@]}";
+        do
+        for k in "${CACHE_SIZE[@]}";
+            do
+                CONFIG_FILE="configuration_files/vima_variations/sandy_vima_${j}_${k}_${THREADS}cores.cfg"
+                #if [[ ${TRACE} == matmul* ]]; then 
+                    echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${j}_${k}_${DATE_TIME}.txt"
+                    #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${j}_${k}_${DATE_TIME}.txt
+                #fi
+            done
+        done
 done

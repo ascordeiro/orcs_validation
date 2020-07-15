@@ -24,7 +24,6 @@ int main(int argc, char const *argv[]) {
         tid = omp_get_thread_num();
         start = tid*chunk_size;
         finish = start + chunk_size;
-        #pragma omp for schedule (static)
         for (i = start; i < finish; i += 16) {
             elem_a1 = _mm512_load_ps (&data_a[i]);
             elem_a2 = _mm512_loadu_ps (&data_a[i+elem-1]);
