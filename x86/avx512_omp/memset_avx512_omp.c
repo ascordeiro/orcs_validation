@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]) {
         tid = omp_get_thread_num();
         start = tid*chunk_size;
         finish = start + chunk_size;
-        for (i = 0; i < v_size; i += 16) {
+        for (i = start; i < finish; i += 16) {
             vec_a = _mm512_load_si512 ((__m512i *) &data_a[i]);
             vec_a = _mm512_set1_epi32(1);
             _mm512_store_si512 ((__m512i *) &data_a[i], vec_a);
