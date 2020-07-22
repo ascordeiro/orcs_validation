@@ -11,11 +11,13 @@ int main(__v32s argc, char const *argv[]) {
         int i = 0;
         __v32u v_size = (1024 * 1024 * size) / sizeof(__v32f);
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        for (i = 0; i < v_size; i++) vector_a[i] = 0;
         __v32f *vector_b = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        for (i = 0; i < v_size; i++) vector_b[i] = 0;
         __v32f *mul = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        for (i = 0; i < v_size; i++) mul[i] = 0;
+        for (i = 0; i < v_size; i += VECTOR_SIZE) {
+            _vim2K_imovs(1, &vector_a[i]);
+            _vim2K_imovs(1, &vector_b[i]);
+            _vim2K_imovs(1, &mul[i]);
+        }
         /*srand (time(NULL));
         for (int x = 0; x < v_size; x++){
             vector_a[x] = rand() % 10 + 1;

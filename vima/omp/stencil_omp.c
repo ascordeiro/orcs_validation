@@ -10,15 +10,17 @@
 int main(__v32s argc, char const *argv[]) {
     __v32u size = atoi(argv[1]);
     if (size != 0 && (size & (size - 1)) == 0){
-        int j = 0;
+        __v32u i;
         __v32u v_size = (1024 * 1024 * size) / sizeof(__v32f);
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        for (j = 0; j < v_size; j++) vector_a[j] = 0.0;
         __v32f *vector_b = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        for (j = 0; j < v_size; j++) vector_b[j] = 0.0;
         __v32f *mul = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        for (j = 0; j < v_size; j++) mul[j] = 0.0;
-        __v32u i;
+        for (i = 0; i < v_size; i += VECTOR_SIZE) {
+            _vim2K_fmovs(1, &vector_a[i]);
+            _vim2K_fmovs(1, &vector_b[i]);
+            _vim2K_fmovs(1, &mul[i]);
+        }
+        
         int elem = sqrt (v_size);
 
         #pragma omp parallel shared (vector_a, vector_b) private (i)

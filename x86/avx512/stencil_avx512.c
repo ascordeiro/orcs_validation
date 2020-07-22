@@ -10,10 +10,19 @@ int main(int argc, char const *argv[]) {
     if (size != 0 && (size & (size - 1)) == 0) v_size = (1024 * 1024 * size) / sizeof(float);
     else return 0;
     
+    __m512 vec_a;
     float* data_a = (float*) aligned_alloc (32, v_size*sizeof (float));
-    for (i = 0; i < v_size; i++) data_a[i] = 0.0;
+    for (i = 0; i < v_size; i += 16) {
+        vec_a = _mm512_load_ps ((__m512 *) &data_a[i]);
+        vec_a = _mm512_set1_ps((float) 1.0);
+        _mm512_store_ps (&data_a[i], vec_a);
+    }
     float* data_b = (float*) aligned_alloc (32, v_size*sizeof (float));
-    for (i = 0; i < v_size; i++) data_b[i] = 0.0;
+    for (i = 0; i < v_size; i += 16) {
+        vec_a = _mm512_load_ps ((__m512 *) &data_b[i]);
+        vec_a = _mm512_set1_ps((float) 1.0);
+        _mm512_store_ps (&data_b[i], vec_a);
+    }
     //for (int x = 0; x < v_size; x++) data_a[x] = rand() % 10 + 1;
     int elem = sqrt (v_size);
     while (elem % 16 != 0) elem++;
