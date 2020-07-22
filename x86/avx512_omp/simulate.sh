@@ -1,10 +1,10 @@
 #!/bin/bash
-HOME="/home/srsantos/Experiment"
+HOME="/home/sairo/Experiment"
 SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/x86/avx512_omp"
 TRACE_HOME=$HOME"/orcs_validation/x86/avx512_omp/traces"
-THREADS=8
-CONFIG_FILE="configuration_files/sandy_bridge_8cores.cfg"
+THREADS=2
+CONFIG_FILE="configuration_files/sandy_bridge_${THREADS}cores.cfg"
 DATE_TIME=$(date '+%d%m%Y_%H%M%S');
 
 cd $CODE_HOME

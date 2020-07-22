@@ -8,10 +8,14 @@
 int main(__v32s argc, char const *argv[]) {
     __v32u size = atoi(argv[1]);
     if (size != 0 && (size & (size - 1)) == 0){
+        int i = 0;
         __v32u v_size = (1024 * 1024 * size) / sizeof(__v32f);
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
+        for (i = 0; i < v_size; i++) vector_a[i] = 0;
         __v32f *vector_b = (__v32f *)malloc(sizeof(__v32f) * v_size);
+        for (i = 0; i < v_size; i++) vector_b[i] = 0;
         __v32f *mul = (__v32f *)malloc(sizeof(__v32f) * v_size);
+        for (i = 0; i < v_size; i++) mul[i] = 0;
         /*srand (time(NULL));
         for (int x = 0; x < v_size; x++){
             vector_a[x] = rand() % 10 + 1;

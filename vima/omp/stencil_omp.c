@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <omp.h>
 #include "../../../intrinsics/vima/vima.hpp"
@@ -9,10 +10,14 @@
 int main(__v32s argc, char const *argv[]) {
     __v32u size = atoi(argv[1]);
     if (size != 0 && (size & (size - 1)) == 0){
+        int j = 0;
         __v32u v_size = (1024 * 1024 * size) / sizeof(__v32f);
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
+        for (j = 0; j < v_size; j++) vector_a[j] = 0.0;
         __v32f *vector_b = (__v32f *)malloc(sizeof(__v32f) * v_size);
+        for (j = 0; j < v_size; j++) vector_b[j] = 0.0;
         __v32f *mul = (__v32f *)malloc(sizeof(__v32f) * v_size);
+        for (j = 0; j < v_size; j++) mul[j] = 0.0;
         __v32u i;
         int elem = sqrt (v_size);
 
