@@ -7,11 +7,14 @@
 int main(int argc, char const *argv[]) {
     int size = atoi(argv[1]);
     int v_size = 0;
+    int i = 0;
     if (size != 0 && (size & (size - 1)) == 0) v_size = (1024 * 1024 * size) / sizeof(float);
     else return 0;
     
     float* data_a = (float*) aligned_alloc (32, v_size*sizeof (float));
+    for (i = 0; i < v_size; i++) data_a[i] = 0.0;
     float* data_b = (float*) aligned_alloc (32, v_size*sizeof (float));
+    for (i = 0; i < v_size; i++) data_b[i] = 0.0;
     int elem = sqrt (v_size);
     while (elem % 16 != 0) elem++;
     
