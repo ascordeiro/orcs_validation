@@ -14,7 +14,7 @@ __v32s main(__v32s argc, char const *argv[]) {
 
         #pragma omp parallel shared (vector_a, vector_b, vector_c) private (i)
         {
-            #pragma omp for schedule (static)
+            #pragma omp for schedule (static, 1)
             for (i = 0; i < v_size; i += VECTOR_SIZE) {
                 _vim2K_fadds(&vector_a[i], &vector_b[i], &vector_c[i]);
             }
