@@ -22,11 +22,11 @@ for i in *.c
 do 
     rm exec/${i%.c}.out
     g++ $i $COMP_FLAGS -o exec/${i%.c}.out
-    if [[ ${i%.c} != matmul* ]]; then
+    if [[ ${i%.c} == stencil* ]]; then
 	for j in "${SIZES[@]}";
 	do
     		echo "$PIN_HOME -t $SINUCA_TRACER_HOME -trace x86 -output $CODE_HOME/traces/${i%.c}.${j}MB.1t -- $CODE_HOME/exec/${i%.c}.out ${j} &> nohup.out &"
-	    	#nohup $PIN_HOME -t $SINUCA_TRACER_HOME -trace x86 -output $CODE_HOME/traces/${i%.c}.${j}MB.1t -- $CODE_HOME/exec/${i%.c}.out ${j} &> nohup.out &
+	    	nohup $PIN_HOME -t $SINUCA_TRACER_HOME -trace x86 -output $CODE_HOME/traces/${i%.c}.${j}MB.1t -- $CODE_HOME/exec/${i%.c}.out ${j} &> nohup.out &
 	done
     else
     	for j in "${SIZES_MATMUL[@]}";

@@ -29,7 +29,7 @@ int main(int argc, char const *argv[]) {
     
     __m512 elem_a1, elem_a2, elem_a3, elem_a4, elem_a5, elem_b;
     __m512 mul = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0};
-    int i, tid, start, finish;
+    int tid, start, finish;
     #pragma omp parallel shared (data_a, data_b, mul) private (i, tid, start, finish, elem_a1, elem_a2, elem_a3, elem_a4, elem_a5, elem_b)
     {
         int chunk_size = v_size / omp_get_num_threads();
