@@ -1,5 +1,5 @@
 #!/bin/bash
-HOME="/home/srsantos/Experiment"
+HOME="/home/sairo/Experiment"
 SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/vima"
 TRACE_HOME=$HOME"/orcs_validation/vima/traces"

@@ -1,11 +1,11 @@
 #!/bin/bash
-HOME="/home/srsantos/Experiment"
+HOME="/home/sairo/Experiment"
 SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/vima/omp"
 TRACE_HOME=$CODE_HOME"/traces"
 THREADS=(4)
 VECTOR_SIZE=(8K)
-CACHE_SIZE=(32 64 128 256)
+CACHE_SIZE=(32)
 DATE_TIME=$(date '+%d%m%Y_%H%M%S');
 
 cd $CODE_HOME
@@ -30,7 +30,7 @@ do
         done
         for k in "${CACHE_SIZE[@]}"
         do
-	    #if [[ ${TRACE} == stencil* ]]; then
+	    if [[ ${TRACE} == memset* ]]; then
                 if [[ ${TRACE} == matmul* || ${TRACE} == *_256* ]]; then 
                     CONFIG_FILE="configuration_files/vima_variations/sandy_vima_256B_${k}_${t}cores.cfg"
 		    #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${j}_${k}_${DATE_TIME}.txt &
@@ -41,7 +41,7 @@ do
                 echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${k}_${DATE_TIME}.txt &"
                 #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${j}_${k}_${DATE_TIME}.txt &
                 #echo "${COMMAND} -c ${CONFIG_FILE}"
-	    #fi
+	    fi
         done
     done
 done

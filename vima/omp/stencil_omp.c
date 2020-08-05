@@ -23,10 +23,16 @@ int main(__v32s argc, char const *argv[]) {
         
         int elem = sqrt (v_size);
 
-        #pragma omp parallel shared (vector_a, vector_b) private (i)
+        int tid, start, finish;
+        #pragma omp parallel shared (vector_a, vector_b) private (i, tid, start, finish)
         {
-            #pragma omp for schedule (static, 1)
-            for (i = 0; i < v_size; i += VECTOR_SIZE) {
+            int chunk_size = v_size / omp_get_num_threads();
+            tid = omp_get_thread_num();
+            start = tid*chunk_size + tid;
+            finish = start + chunk_size + tid + 1;
+            if (finish > v_size) finish = v_size;
+            printf ("v_size: %d | %d of %d threads, %d to %d\n", v_size, tid, omp_get_num_threads(), start, finish);
+            for (i = start; i < finish; i += VECTOR_SIZE) {
                 _vim2K_fadds(&vector_a[i], &vector_a[i+elem-1], &vector_b[i+elem]);
                 _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem], &vector_b[i+elem]);
                 _vim2K_fadds(&vector_b[i+elem], &vector_a[i+elem+1], &vector_b[i+elem]);
