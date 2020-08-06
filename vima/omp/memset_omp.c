@@ -14,8 +14,11 @@ __v32s main(__v32s argc, char const *argv[]) {
         {
             int chunk_size = v_size / omp_get_num_threads();
             tid = omp_get_thread_num();
-            start = tid*chunk_size + tid;
-            finish = start + chunk_size + tid + 1;
+            start = tid*chunk_size;
+            finish = start + chunk_size;
+
+            start = start + tid * VECTOR_SIZE;
+            finish = finish + (tid+1) * VECTOR_SIZE;
             if (finish > v_size) finish = v_size;
             printf ("v_size: %d | %d of %d threads, %d to %d\n", v_size, tid, omp_get_num_threads(), start, finish);
             for (i = start; i < finish; i += VECTOR_SIZE) {
