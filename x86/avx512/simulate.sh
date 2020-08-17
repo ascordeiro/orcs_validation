@@ -17,7 +17,7 @@ for i in *.tid0.stat.out.gz
 do 
     cd $SIM_HOME
     TRACE=${i%.tid0.stat.out.gz}
-    if [[ ${TRACE} == stencil* ]]; then
+    if [[ ${TRACE} != matmul* ]]; then
     	echo "nohup ./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/sandy_bridge.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt"
     	nohup ./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/sandy_bridge.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &
     fi

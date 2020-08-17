@@ -12,16 +12,17 @@ __v32s main(__v32s argc, char const *argv[]) {
         int tid, start, finish;
         #pragma omp parallel shared (vector) private (i, tid, start, finish)
         {
-            int chunk_size = v_size / omp_get_num_threads();
-            tid = omp_get_thread_num();
-            start = tid*chunk_size;
-            finish = start + chunk_size;
+            //int chunk_size = v_size / omp_get_num_threads();
+            //tid = omp_get_thread_num();
+            //start = tid*chunk_size;
+            //finish = start + chunk_size;
 
-            start = start + tid * VECTOR_SIZE;
-            finish = finish + (tid+1) * VECTOR_SIZE;
-            if (finish > v_size) finish = v_size;
-            printf ("v_size: %d | %d of %d threads, %d to %d\n", v_size, tid, omp_get_num_threads(), start, finish);
-            for (i = start; i < finish; i += VECTOR_SIZE) {
+            //start = start + tid * VECTOR_SIZE;
+            //finish = finish + (tid+1) * VECTOR_SIZE;
+            //if (finish > v_size) finish = v_size;
+            //printf ("v_size: %d | %d of %d threads, %d to %d\n", v_size, tid, omp_get_num_threads(), start, finish);
+            #pragma omp for schedule (static)
+	    for (i = 0; i < v_size; i += VECTOR_SIZE) {
                 _vim2K_imovs(1, &vector[i]);
             }
         }

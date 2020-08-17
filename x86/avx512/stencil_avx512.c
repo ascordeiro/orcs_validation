@@ -5,60 +5,67 @@
 
 int main(int argc, char const *argv[]) {
     int size = atoi(argv[1]);
-    int v_size;
-    int i = 0;
-    if (size != 0 && (size & (size - 1)) == 0) v_size = (1024 * 1024 * size) / sizeof(float);
-    else return 0;
-    
-    __m512 vec_a;
-    float* data_a = (float*) aligned_alloc (32, v_size*sizeof (float));
-    for (i = 0; i < v_size; i += 16) {
-        vec_a = _mm512_load_ps ((__m512 *) &data_a[i]);
-        vec_a = _mm512_set1_ps((float) 1.0);
-        _mm512_store_ps (&data_a[i], vec_a);
-    }
-    float* data_b = (float*) aligned_alloc (32, v_size*sizeof (float));
-    for (i = 0; i < v_size; i += 16) {
-        vec_a = _mm512_load_ps ((__m512 *) &data_b[i]);
-        vec_a = _mm512_set1_ps((float) 1.0);
-        _mm512_store_ps (&data_b[i], vec_a);
-    }
-    //for (int x = 0; x < v_size; x++) data_a[x] = rand() % 10 + 1;
+    int v_size = (1024 * 1024 * size) / sizeof(float);
+    int i;
     int elem = sqrt (v_size);
     while (elem % 16 != 0) elem++;
-    /*for (int x = 0; x < elem; x++){
-        for (int y = 0; y < elem; y++){
-            printf ("%.0f ", data_a[x+y]);
-        }
-        printf ("\n");
-    }*/
-    
+    int remainder = 0;
+
+    __m512 vec_a = _mm512_set1_ps((float) 1.0);
+    float* data_a = (float*) aligned_alloc (32, v_size*sizeof (float));
+    for (i = 0; i < v_size; i += 16) _mm512_store_ps (&data_a[i], vec_a);
+
+    vec_a = _mm512_set1_ps((float) 0.0);
+    float* data_b = (float*) aligned_alloc (32, v_size*sizeof (float));
+    for (i = 0; i < v_size; i += 16) _mm512_store_ps (&data_b[i], vec_a);
+
     __m512 elem_a1, elem_a2, elem_a3, elem_a4, elem_a5, elem_b;
     __m512 mul = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0};
-    for (int i = 0; i < v_size; i += 16) {
-        elem_a1 = _mm512_load_ps (&data_a[i]);
-        elem_a2 = _mm512_loadu_ps (&data_a[i+elem-1]);
-        elem_a3 = _mm512_load_ps (&data_a[i+elem]);
-        elem_a4 = _mm512_loadu_ps (&data_a[i+elem+1]);
-        elem_a5 = _mm512_load_ps (&data_a[i+elem*2]);
+    for (int i = elem; i+elem+16 < v_size; i += 16) {
+        elem_a1 = _mm512_load_ps (&data_a[i-elem]);
+        elem_a2 = _mm512_loadu_ps (&data_a[i-1]);
+        elem_a3 = _mm512_load_ps (&data_a[i]);
+        elem_a4 = _mm512_loadu_ps (&data_a[i+1]);
+        elem_a5 = _mm512_load_ps (&data_a[i+elem]);
         elem_b = _mm512_add_ps(elem_a1, elem_a2);
         elem_b = _mm512_add_ps(elem_b, elem_a3);
         elem_b = _mm512_add_ps(elem_b, elem_a4);
         elem_b = _mm512_add_ps(elem_b, elem_a5);
         elem_b = _mm512_mul_ps(elem_b, mul);
-        _mm512_stream_ps (&data_b[i+elem], elem_b);
+        _mm512_stream_ps (&data_b[i], elem_b);        
+        remainder = i;
     }
-    /*printf ("\n\n\n");
-    for (int x = 0; x < elem; x++){
-        for (int y = 0; y < elem; y++){
-            printf ("%.0f ", data_b[x+y]);
-        }
-        printf ("\n");
-    }*/
+
+    for (int i = 0; i < elem; i += 16){
+	if (i-elem > 0) elem_a1 = _mm512_load_ps (&data_a[i-elem]);
+        if (i-1 > 0) elem_a2 = _mm512_loadu_ps (&data_a[i-1]);
+        elem_a3 = _mm512_load_ps (&data_a[i]);
+        elem_a4 = _mm512_loadu_ps (&data_a[i+1]);
+        elem_a5 = _mm512_load_ps (&data_a[i+elem]);
+        elem_b = _mm512_add_ps(elem_a1, elem_a2);
+        elem_b = _mm512_add_ps(elem_b, elem_a3);
+        elem_b = _mm512_add_ps(elem_b, elem_a4);
+        elem_b = _mm512_add_ps(elem_b, elem_a5);
+        elem_b = _mm512_mul_ps(elem_b, mul);
+        _mm512_stream_ps (&data_b[i], elem_b);
+    }
+
+    for (int i = remainder; i < v_size; i+=16){
+	elem_a1 = _mm512_load_ps (&data_a[i-elem]);
+        elem_a2 = _mm512_loadu_ps (&data_a[i-1]);
+        elem_a3 = _mm512_load_ps (&data_a[i]);
+        if (i+1 < v_size) elem_a4 = _mm512_loadu_ps (&data_a[i+1]);
+        if (i+elem < v_size) elem_a5 = _mm512_load_ps (&data_a[i+elem]);
+        elem_b = _mm512_add_ps(elem_a1, elem_a2);
+        elem_b = _mm512_add_ps(elem_b, elem_a3);
+        elem_b = _mm512_add_ps(elem_b, elem_a4);
+        elem_b = _mm512_add_ps(elem_b, elem_a5);
+        elem_b = _mm512_mul_ps(elem_b, mul);
+        _mm512_stream_ps (&data_b[i], elem_b);
+    }
 
     printf ("%f\n", data_b[v_size-1]);
-
-    free (data_a);
-    free (data_b);
+    
     return 0;
 }
+

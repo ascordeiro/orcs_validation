@@ -3,7 +3,7 @@ HOME="/home/srsantos/Experiment"
 SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/x86/avx512_omp"
 TRACE_HOME=$HOME"/orcs_validation/x86/avx512_omp/traces"
-THREADS=32
+THREADS=2
 CONFIG_FILE="configuration_files/sandy_bridge_${THREADS}cores.cfg"
 DATE_TIME=$(date '+%d%m%Y_%H%M%S');
 
@@ -26,7 +26,7 @@ do
         let COUNTER=COUNTER+1
     done
 
-    if [[ ${TRACE} == stencil* ]]; then 
+    if [[ ${TRACE} != matmul* ]]; then 
         echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt"
         nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &
     fi
