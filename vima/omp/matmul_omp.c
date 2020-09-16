@@ -28,7 +28,7 @@ __v32s main(__v32s argc, char const *argv[]) {
                             _vim64_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                             _vim64_fcums(&aux_vec[k * VECTOR_SIZE], &partial_sum[k]);
                         }
-                        _vim64_fcums(partial_sum, &matrix_c[(i * m_size)]);
+                        _vim64_fcums(partial_sum, &matrix_c[(i * m_size) + j]);
                     }
                 }
             } else if (VECTOR_SIZE == 2048){
@@ -39,7 +39,7 @@ __v32s main(__v32s argc, char const *argv[]) {
                             _vim2K_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                             _vim2K_fcums(&aux_vec[k * VECTOR_SIZE], &partial_sum[k]);
                         }
-                        _vim2K_fcums(partial_sum, &matrix_c[(i * m_size)]);
+                        _vim2K_fcums(partial_sum, &matrix_c[(i * m_size) + j]);
                     }
                 }
             } else printf ("VECTOR SIZE must be either 64 or 2048.\n");
