@@ -14,7 +14,7 @@ __v32s main(__v32s argc, char const *argv[]) {
         __v32f *matrix_b = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
         __v32f *matrix_c = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
         __v32f *aux_vec = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE * n_vectors);
-        __v32f sum, partial_sum;
+        __v32f *partial_sum = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE * n_vectors);
 
         __v32s i, j, k;
 
@@ -25,13 +25,11 @@ __v32s main(__v32s argc, char const *argv[]) {
                 for (i = 0; i < m_size; ++i) {
                     for (j = 0; j < m_size; ++j) {
                         partial_sum = 0;
-                        sum = 0;
                         for (k = 0; k < n_vectors; ++k) {
                             _vim64_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
-                            _vim64_fcums(&aux_vec[k * VECTOR_SIZE], &sum);
-                            partial_sum += sum;
+                            _vim64_fcums(&aux_vec[k * VECTOR_SIZE], &partial_sum[k]);
                         }
-                        matrix_c[(i * m_size) + j] = partial_sum;
+                        _vim64_fcums(partial_sum, &matrix_c[(i * m_size)]);
                     }
                 }
             } else if (VECTOR_SIZE == 2048){
@@ -39,13 +37,11 @@ __v32s main(__v32s argc, char const *argv[]) {
                 for (i = 0; i < m_size; ++i) {
                     for (j = 0; j < m_size; ++j) {
                         partial_sum = 0;
-                        sum = 0;
                         for (k = 0; k < n_vectors; ++k) {
                             _vim2K_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
-                            _vim2K_fcums(&aux_vec[k * VECTOR_SIZE], &sum);
-                            partial_sum += sum;
+                            _vim2K_fcums(&aux_vec[k * VECTOR_SIZE], &partial_sum[k]);
                         }
-                        matrix_c[(i * m_size) + j] = partial_sum;
+                        _vim8K_fcums(partial_sum, &matrix_c[(i * m_size)]);
                     }
                 }
             } else printf ("VECTOR SIZE must be either 64 or 2048.\n");
