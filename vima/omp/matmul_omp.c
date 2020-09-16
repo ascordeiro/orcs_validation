@@ -18,7 +18,7 @@ __v32s main(__v32s argc, char const *argv[]) {
 
         __v32s i, j, k;
 
-        #pragma omp parallel shared (matrix_a, matrix_b, matrix_c) private (i, j, k, sum, partial_sum)
+        #pragma omp parallel shared (matrix_a, matrix_b, matrix_c) private (i, j, k, partial_sum)
         {
             if (VECTOR_SIZE == 64){
                 #pragma omp for schedule (static)
