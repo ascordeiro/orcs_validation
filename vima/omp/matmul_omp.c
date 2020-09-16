@@ -24,7 +24,6 @@ __v32s main(__v32s argc, char const *argv[]) {
                 #pragma omp for schedule (static)
                 for (i = 0; i < m_size; ++i) {
                     for (j = 0; j < m_size; ++j) {
-                        partial_sum = 0;
                         for (k = 0; k < n_vectors; ++k) {
                             _vim64_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                             _vim64_fcums(&aux_vec[k * VECTOR_SIZE], &partial_sum[k]);
@@ -36,7 +35,6 @@ __v32s main(__v32s argc, char const *argv[]) {
                 #pragma omp for schedule (static)
                 for (i = 0; i < m_size; ++i) {
                     for (j = 0; j < m_size; ++j) {
-                        partial_sum = 0;
                         for (k = 0; k < n_vectors; ++k) {
                             _vim2K_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                             _vim2K_fcums(&aux_vec[k * VECTOR_SIZE], &partial_sum[k]);
