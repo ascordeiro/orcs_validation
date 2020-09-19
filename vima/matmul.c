@@ -12,8 +12,12 @@ __v32s main(__v32s argc, char const *argv[]) {
         __v32f *matrix_a = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
         __v32f *matrix_b = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
         __v32f *matrix_c = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
-        __v32f *aux_vec = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE * n_vectors);
-        __v32f *partial_sum = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));;
+        __v32f *mask = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE);
+        __v32f *aux_vec = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE);
+        __v32f *aux_vec_a = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE);
+        __v32f *aux_vec_b = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE);
+        __v32f *partial_sum = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
+         for (int i = 0; i < m_size; i++) mask[i] = 1.0;
 
         /*for (int x = 0; x < m_size*VECTOR_SIZE*n_vectors; x++){
             matrix_a[x] = rand() % 10 + 1;
@@ -34,11 +38,14 @@ __v32s main(__v32s argc, char const *argv[]) {
             for (__v32s i = 0; i < m_size; ++i) {
                 for (__v32s j = 0; j < m_size; ++j) {
                     for (__v32s k = 0; k < n_vectors; ++k) {
-                        _vim64_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
-                        _vim64_fcums(&aux_vec[k * VECTOR_SIZE], &partial_sum[k]);
+                        _vim64_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], mask, aux_vec_a);
+                        _vim64_fmuls(&matrix_b[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], mask, aux_vec_b);
+                        _vim64_fmuls(aux_vec_a, aux_vec_b, aux_vec);
+                        _vim64_fcums(aux_vec, &partial_sum[k]);
                         //printf ("a: %p | b: %p | aux: %p\n", &matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                     }
                     _vim64_fcums(partial_sum, &matrix_c[(i * m_size) + j]);
+                    //printf ("C: %.0f\n", matrix_c[(i * VECTOR_SIZE) + j]);
                     //printf ("C: %.0f\n", matrix_c[(i * VECTOR_SIZE) + j]);
                 }
             }
@@ -46,8 +53,10 @@ __v32s main(__v32s argc, char const *argv[]) {
             for (__v32s i = 0; i < m_size; ++i) {
                 for (__v32s j = 0; j < m_size; ++j) {
                     for (__v32s k = 0; k < n_vectors; ++k) {
-                        _vim2K_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
-                        _vim2K_fcums(&aux_vec[k * VECTOR_SIZE], &partial_sum[k]);
+                        _vim2K_fmuls(&matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], mask, aux_vec_a);
+                        _vim2K_fmuls(&matrix_b[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], mask, aux_vec_b);
+                        _vim2K_fmuls(aux_vec_a, aux_vec_b, aux_vec);
+                        _vim2K_fcums(aux_vec, &partial_sum[k]);
                         //printf ("a: %p | b: %p | aux: %p\n", &matrix_a[(i * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &matrix_b[(j * VECTOR_SIZE * n_vectors) + (k * VECTOR_SIZE)], &aux_vec[k * VECTOR_SIZE]);
                     }
                     _vim2K_fcums(partial_sum, &matrix_c[(i * m_size) + j]);
@@ -64,10 +73,7 @@ __v32s main(__v32s argc, char const *argv[]) {
 
         printf ("%f\n", matrix_c[m_size-1]);
 
-        free(matrix_a);
-        free(matrix_b);
-        free(matrix_c);
-        free(aux_vec);
+        
 
     } else {
         printf("Error! Size is not power of two!\n");
