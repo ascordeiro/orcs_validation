@@ -20,10 +20,10 @@ int main(int argc, char const *argv[]) {
         __m512 vec_a, vec_b, aux_vec;
         #pragma omp parallel shared (vec_a, vec_b) private (i, j, k, sum, aux_vec)
         {
-            #pragma omp for schedule (static)
             for (i = 0; i < m_size; ++i) {
                 for (j = 0; j < m_size; ++j) {
                     sum = 0;
+                    #pragma omp for schedule (dynamic)
                     for (k = 0; k < n_vectors; ++k) {
                         vec_a = _mm512_load_ps (&matrix_a[(i * 16 * n_vectors) + (k * 16)]);
                         vec_b = _mm512_load_ps (&matrix_b[(j * 16 * n_vectors) + (k * 16)]);
@@ -37,6 +37,11 @@ int main(int argc, char const *argv[]) {
         }
 
         printf ("%f\n", matrix_c[m_size-1]);
+
+        free(matrix_a);
+        free(matrix_b);
+        free(matrix_c);
+
     } else {
         printf("Error! Size is not power of two!\n");
         exit(1);

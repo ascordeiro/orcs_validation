@@ -16,7 +16,6 @@ int main(int argc, char const *argv[]) {
         float sum, partial_sum;
 
         /*printf ("%d \n", m_size);
-
         for (int x = 0; x < m_size*16*n_vectors; x++){
             matrix_a[x] = rand() % 10 + 1;
             matrix_b[x] = rand() % 10 + 1;
@@ -32,7 +31,6 @@ int main(int argc, char const *argv[]) {
             if (i != 0 && i % m_size == 0) printf ("\n");
             printf ("%.0f ", matrix_b[i]);
         }
-
         printf ("\n");*/
         
         __m512 vec_a, vec_b, aux_vec;
