@@ -4,55 +4,44 @@
 #include <immintrin.h>
 #include <omp.h>
 
-
 int main(int argc, char const *argv[]) {
     int size = atoi(argv[1]);
 
     if (size != 0 && (size & (size - 1)) == 0) {
         int m_size = sqrt((1024 * 1024 * size) / sizeof(float));
         while (m_size % 256 != 0) m_size++;
-        float *matrix_a = (float *) aligned_alloc(32, sizeof (float) * m_size * m_size);
-        float *matrix_b = (float *) aligned_alloc(32, sizeof (float) * m_size * m_size);
-        float *matrix_c = (float *) aligned_alloc(32, sizeof (float) * m_size * m_size);
+        int n_vectors = ceil(((double) m_size/(double) 16));
+        float *matrix_a = (float *) aligned_alloc(32, sizeof (float) * m_size * (16 * n_vectors));
+        float *matrix_b = (float *) aligned_alloc(32, sizeof (float) * m_size * (16 * n_vectors));
+        float *matrix_c = (float *) aligned_alloc(32, sizeof (float) * m_size * (16 * n_vectors));
+        float sum;
 
-        int BLOCKSIZE = 64 / sizeof (float);
-        int count = 0;
-        
-        int i, j, k, i0, k0, j0;
-        __m256 vec_a, vec_b, aux_vec;
-        #pragma omp parallel shared (vec_a, vec_b, matrix_a, matrix_b, matrix_c) private (i, j, k, aux_vec)
+        int i, j, k;
+        __m512 vec_a, vec_b, aux_vec;
+        #pragma omp parallel shared (vec_a, vec_b) private (i, j, k, sum, aux_vec)
         {
-            #pragma omp for schedule (static)
-            for(i0 = 0; i0 < m_size; i0 += BLOCKSIZE) {
-                for(k0 = 0; k0 < m_size; k0 += BLOCKSIZE) {
-                    for(j0 = 0; j0 < m_size; j0 += BLOCKSIZE) {
-                        for (i = i0; i < i0+BLOCKSIZE; i++) {
-                            for (j = j0; j < j0+BLOCKSIZE; j+=16)  {
-                                //printf ("C: i = %d, j = %d\n", i, j);
-                                aux_vec = _mm256_load_ps(&matrix_c[i*m_size + j]);
-                                for (k = k0; k < k0+BLOCKSIZE; k++) {
-                                    //printf ("A: i = %d, k = %d\n", i, k);
-                                    vec_a = _mm256_load_ps (&matrix_a[i*m_size + k]);
-                                    //printf ("\nvec_a  : ");
-                                    //for (int i = 0; i < 16; i++) printf ("%.0f ", vec_a[i]);
-                                    //printf ("B: k = %d, j = %d\n", k, j);
-                                    vec_b = _mm256_load_ps (&matrix_b[k*m_size + j]);
-                                    //printf ("\nvec_b  : ");
-                                    //for (int i = 0; i < 16; i++) printf ("%.0f ", vec_b[i]);
-                                    aux_vec = _mm256_add_ps (aux_vec, _mm256_mul_ps (vec_a, vec_b));
-                                    count++;
-                                }
-                                //printf ("C: i = %d, j = %d\n", i, j);
-                                _mm256_store_ps(&matrix_c[i*m_size + j], aux_vec);
-                            }
-                        }
+            for (i = 0; i < m_size; ++i) {
+                for (j = 0; j < m_size; ++j) {
+                    sum = 0;
+                    #pragma omp for schedule (dynamic)
+                    for (k = 0; k < n_vectors; ++k) {
+                        vec_a = _mm512_load_ps (&matrix_a[(i * 16 * n_vectors) + (k * 16)]);
+                        vec_b = _mm512_load_ps (&matrix_b[(j * 16 * n_vectors) + (k * 16)]);
+                        aux_vec = _mm512_mul_ps (vec_a, vec_b);
+                        
+                        for (int i = 0; i < 16; i++) sum += aux_vec[i];
                     }
+                    matrix_c[(i * m_size) + j] = sum;
                 }
             }
         }
 
-        printf ("%f\n", matrix_c[m_size*m_size-1]);
-        printf ("count = %d\n", count);
+        printf ("%f\n", matrix_c[m_size-1]);
+
+        free(matrix_a);
+        free(matrix_b);
+        free(matrix_c);
+
     } else {
         printf("Error! Size is not power of two!\n");
         exit(1);
