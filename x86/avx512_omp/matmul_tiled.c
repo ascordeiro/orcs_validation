@@ -11,23 +11,18 @@ int main(int argc, char const *argv[]) {
         int m_size = sqrt((1024 * 1024 * size) / sizeof(float));
         while (m_size % 256 != 0) m_size++;
         int n_vectors = ceil(((double) m_size/(double) 16));
-        printf("m_size %d - n_vectors %d\n", m_size, n_vectors);
+
         float *matrix_a = (float *) aligned_alloc(32, sizeof (float) * m_size * (16 * n_vectors));
         float *matrix_b = (float *) aligned_alloc(32, sizeof (float) * m_size * (16 * n_vectors));
         float *matrix_c = (float *) aligned_alloc(32, sizeof (float) * m_size * (16 * n_vectors));
         float sum;
         int blocks = m_size*m_size/2, idx = 0;
         __m512 vec_a, vec_b, aux_vec;
-        // tiles 
         for (int i = 0; i < m_size * m_size; i += blocks) {
-            //tiles
             idx = i;
             for (int j = 0; j < m_size; j += m_size/2) {
-                //lines matrix_a
                 for (int k = (i + j); k < (i + j) + blocks; k += m_size) {
-                    //lines matrix_b
                     for (int l = (i + j); l < (i + j) + blocks; l += m_size) {
-                        // half line
                         for (int m = 0; m < m_size/2; m += 16) {
                             vec_a = _mm512_load_ps(&matrix_a[k + m]);
                             vec_b = _mm512_load_ps(&matrix_b[l + m]);
