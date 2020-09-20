@@ -15,7 +15,7 @@ int main(int argc, char const *argv[]) {
     __m512i vec_a, vec_b;
     for (int i = 0; i < v_size; i += 16) {
         vec_a = _mm512_load_si512 ((__m512i *) &data_a[i]);
-        _mm512_stream_si512 ((__m512i *) &data_b[i], vec_a);
+        _mm512_store_si512 ((__m512i *) &data_b[i], vec_a);
     }
 
     printf ("%d\n", data_b[v_size-1]);
