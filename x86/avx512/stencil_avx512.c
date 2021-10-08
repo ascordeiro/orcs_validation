@@ -3,6 +3,14 @@
 #include <math.h>
 #include <immintrin.h>
 
+void __attribute__ ((noinline)) ORCS_tracing_start() {
+    asm volatile ("nop");
+}
+
+void __attribute__ ((noinline)) ORCS_tracing_stop() {
+    asm volatile ("nop");
+}
+
 int main(int argc, char const *argv[]) {
     int size = atoi(argv[1]);
     int v_size = (1024 * 1024 * size) / sizeof(float);
@@ -21,6 +29,7 @@ int main(int argc, char const *argv[]) {
 
     __m512 elem_a1, elem_a2, elem_a3, elem_a4, elem_a5, elem_b;
     __m512 mul = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0};
+    ORCS_tracing_start();
     for (int i = elem; i+elem+16 < v_size; i += 16) {
         elem_a1 = _mm512_load_ps (&data_a[i-elem]);
         elem_a2 = _mm512_loadu_ps (&data_a[i-1]);
@@ -63,6 +72,7 @@ int main(int argc, char const *argv[]) {
         elem_b = _mm512_mul_ps(elem_b, mul);
         _mm512_stream_ps (&data_b[i], elem_b);
     }
+    ORCS_tracing_stop();
 
     printf ("%f\n", data_b[v_size-1]);
     
