@@ -1,6 +1,14 @@
 #include "../../intrinsics/vima/vima.hpp"
 #include <math.h>
 
+void __attribute__ ((noinline)) ORCS_tracing_start() {
+    asm volatile ("nop");
+}
+
+void __attribute__ ((noinline)) ORCS_tracing_stop() {
+    asm volatile ("nop");
+}
+
 __v32s main(__v32s argc, char const *argv[]) {
     __v32s size = atoi(argv[1]);
     __v32s VECTOR_SIZE = atoi (argv[2]);
@@ -50,6 +58,7 @@ __v32s main(__v32s argc, char const *argv[]) {
                 }
             }
         } else if (VECTOR_SIZE == 2048){
+            ORCS_tracing_start();
             for (__v32s i = 0; i < m_size; ++i) {
                 for (__v32s j = 0; j < m_size; ++j) {
                     for (__v32s k = 0; k < n_vectors; ++k) {
@@ -63,6 +72,7 @@ __v32s main(__v32s argc, char const *argv[]) {
                     //printf ("C: %.0f\n", matrix_c[(i * VECTOR_SIZE) + j]);
                 }
             }
+            ORCS_tracing_stop();
         } else printf ("VECTOR SIZE must be either 64 or 2048.\n");
 
         /*printf ("\n\nb: \n");
