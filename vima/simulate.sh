@@ -13,20 +13,23 @@ if [ ! -d "resultados" ]; then
 fi
 
 cd $TRACE_HOME
-
-for i in *.1KB.1t.tid0.stat.out.gz
+for i in *_64B*.tid0.stat.out.gz
 do 
-    for j in "${CACHE_SIZE}"
-    do
     cd $SIM_HOME
     if [[ ${i%.c} != matmul.* && ${i%.c} != *_256* ]]; then
         TRACE=${i%.tid0.stat.out.gz}
-        echo "./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/skylakeServer.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &"
-        nohup ./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/skylakeServer.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &
-    else
-        TRACE=${i%.tid0.stat.out.gz}
-        echo "./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/sandy_vima_256.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &"
-        nohup ./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/sandy_vima_256.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &
+        echo "./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/vima_variations/sandy_vima_256B_256_1cores.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &"
+        nohup ./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/vima_variations/sandy_vima_256B_256_1cores.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &
     fi
-    done
+done
+
+cd $TRACE_HOME
+for i in *_2048B*.tid0.stat.out.gz
+do 
+    cd $SIM_HOME
+    if [[ ${i%.c} != matmul.* && ${i%.c} != *_256* ]]; then
+        TRACE=${i%.tid0.stat.out.gz}
+        echo "./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/vima_variations/sandy_vima_8K_256_1cores.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &"
+        nohup ./orcs -t ${TRACE_HOME}/${TRACE} -c configuration_files/vima_variations/sandy_vima_8K_256_1cores.cfg &> ${CODE_HOME}/resultados/${TRACE}_${DATE_TIME}.txt &
+    fi
 done
