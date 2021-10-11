@@ -21,10 +21,19 @@ int main(__v32s argc, char const *argv[]) {
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *vector_b = (__v32f *)malloc(sizeof(__v32f) * v_size);
         __v32f *mul = (__v32f *)malloc(sizeof(__v32f) * v_size);
-        for (i = 0; i < v_size; i += VECTOR_SIZE) {
-            _vim2K_fmovs(1, &vector_a[i]);
-            _vim2K_fmovs(0, &vector_b[i]);
-            _vim2K_fmovs(1, &mul[i]);
+        if (VECTOR_SIZE == 2048){
+            for (i = 0; i < v_size; i += VECTOR_SIZE) {
+                _vim2K_fmovs(1, &vector_a[i]);
+                _vim2K_fmovs(0, &vector_b[i]);
+                _vim2K_fmovs(1, &mul[i]);
+            }
+        }
+        if (VECTOR_SIZE == 64){
+            for (i = 0; i < v_size; i += VECTOR_SIZE) {
+                _vim64_fmovs(1, &vector_a[i]);
+                _vim64_fmovs(0, &vector_b[i]);
+                _vim64_fmovs(1, &mul[i]);
+            }
         }
         /*srand (time(NULL));
         for (int x = 0; x < v_size; x++){
