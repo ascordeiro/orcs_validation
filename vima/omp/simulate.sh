@@ -2,7 +2,7 @@
 HOME="/home/srsantos/Experiment"
 SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/vima/omp"
-TRACE_HOME=$CODE_HOME"/traces"
+TRACE_HOME=$CODE_HOME"/traces_new_vima"
 THREADS=(2 4 8 16 32)
 VECTOR_SIZE=(8K)
 CACHE_SIZE=(64)
@@ -30,20 +30,14 @@ do
         done
         for k in "${CACHE_SIZE[@]}"
         do
-	    #if [[ ${TRACE} == memset* ]]; then
-                if [[ ${TRACE} == matmul* ||  ${TRACE} == *_256* ]]; then 
-		#if [[ ${TRACE} == matmul* ]]; then 
-                    CONFIG_FILE="configuration_files/vima_variations/sandy_vima_256B_${k}_${t}cores.cfg"
-		    #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${j}_${k}_${DATE_TIME}.txt &
-                else
-                    CONFIG_FILE="configuration_files/vima_variations/sandy_vima_8K_${k}_${t}cores.cfg"
-		    nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${j}_${k}_${DATE_TIME}.txt &
-		    echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${k}_${DATE_TIME}.txt &"
-                fi
-                #echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${k}_${DATE_TIME}.txt &"
+	        if [[ ${TRACE} == *64B* ]]; then 
+		        CONFIG_FILE="configuration_files/vima_variations/sandy_vima_256B_${k}_${t}cores.cfg"
+		    else
+                CONFIG_FILE="configuration_files/vima_variations/sandy_vima_8K_${k}_${t}cores.cfg"
+            fi
+                echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${k}_${DATE_TIME}.txt &"
                 #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${j}_${k}_${DATE_TIME}.txt &
                 #echo "${COMMAND} -c ${CONFIG_FILE}"
-	    #fi
         done
     done
 done
