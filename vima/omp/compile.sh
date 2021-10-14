@@ -32,8 +32,8 @@ do
 	do
 		for k in "${VECTOR[@]}";
 		do
-    		echo "$PIN_HOME -t $SINUCA_TRACER_HOME -orcs_tracing 1 -trace iVIM -output $CODE_HOME/traces/${i%.c}.${j}MB.${THREADS}t -threads ${THREADS} -- $CODE_HOME/exec/${i%.c}.out ${j} ${k} &> nohup.out &"
-	    	nohup $PIN_HOME -t $SINUCA_TRACER_HOME -orcs_tracing 1 -trace iVIM -output $CODE_HOME/traces/${i%.c}.${j}MB.${THREADS}t -threads ${THREADS} -- $CODE_HOME/exec/${i%.c}.out ${j} ${k} &> nohup.out
+    		echo "$PIN_HOME -t $SINUCA_TRACER_HOME -orcs_tracing 1 -trace iVIM -output $CODE_HOME/traces/${i%.c}.${k}B.${j}MB.${THREADS}t -threads ${THREADS} -- $CODE_HOME/exec/${i%.c}.out ${j} ${k} &> nohup.out &"
+	    	nohup $PIN_HOME -t $SINUCA_TRACER_HOME -orcs_tracing 1 -trace iVIM -output $CODE_HOME/traces/${i%.c}.${k}B.${j}MB.${THREADS}t -threads ${THREADS} -- $CODE_HOME/exec/${i%.c}.out ${j} ${k} &> nohup.out
 		done
 	done
 done

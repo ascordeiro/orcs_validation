@@ -26,8 +26,8 @@ int main(__v32s argc, char const *argv[]) {
 
         #pragma omp parallel shared (vector_a, vector_b, remainder) private (i)
         {
-            #pragma omp for schedule (static)
             if (VECTOR_SIZE == 2048){
+                #pragma omp for schedule (static)
                 for (i = elem; i < remainder; i += VECTOR_SIZE) {
                     if (i+elem+VECTOR_SIZE > v_size) ;
                     _vim2K_fadds(&vector_b[i], &vector_a[i-elem], &vector_b[i]);
@@ -40,6 +40,7 @@ int main(__v32s argc, char const *argv[]) {
             }
 
             if (VECTOR_SIZE == 64){
+                #pragma omp for schedule (static)
                 for (i = elem; i < remainder; i += VECTOR_SIZE) {
                     if (i+elem+VECTOR_SIZE > v_size) ;
                     _vim64_fadds(&vector_b[i], &vector_a[i-elem], &vector_b[i]);
