@@ -5,10 +5,9 @@
 #include <omp.h>
 #include "../../../intrinsics/vima/vima.hpp"
 
-#define VECTOR_SIZE 2048
-
 int main(__v32s argc, char const *argv[]) {
     __v32u size = atoi(argv[1]);
+    __v32u VECTOR_SIZE = atoi(argv[2]);
     if (size != 0 && (size & (size - 1)) == 0){
         __v32u i;
         __v32u v_size = (1024 * 1024 * size) / sizeof(__v32f);
@@ -28,14 +27,28 @@ int main(__v32s argc, char const *argv[]) {
         #pragma omp parallel shared (vector_a, vector_b, remainder) private (i)
         {
             #pragma omp for schedule (static)
-            for (i = elem; i < remainder; i += VECTOR_SIZE) {
-                if (i+elem+VECTOR_SIZE > v_size) ;
-                _vim2K_fadds(&vector_b[i], &vector_a[i-elem], &vector_b[i]);
-                _vim2K_fadds(&vector_b[i], &vector_a[i], &vector_b[i]);
-                _vim2K_fadds(&vector_b[i], &vector_a[i-1], &vector_b[i]);
-                _vim2K_fadds(&vector_b[i], &vector_a[i+1], &vector_b[i]);
-                _vim2K_fadds(&vector_b[i], &vector_a[i+elem], &vector_b[i]);
-                _vim2K_fmuls(&vector_b[i], &mul[i], &vector_b[i]);
+            if (VECTOR_SIZE == 2048){
+                for (i = elem; i < remainder; i += VECTOR_SIZE) {
+                    if (i+elem+VECTOR_SIZE > v_size) ;
+                    _vim2K_fadds(&vector_b[i], &vector_a[i-elem], &vector_b[i]);
+                    _vim2K_fadds(&vector_b[i], &vector_a[i], &vector_b[i]);
+                    _vim2K_fadds(&vector_b[i], &vector_a[i-1], &vector_b[i]);
+                    _vim2K_fadds(&vector_b[i], &vector_a[i+1], &vector_b[i]);
+                    _vim2K_fadds(&vector_b[i], &vector_a[i+elem], &vector_b[i]);
+                    _vim2K_fmuls(&vector_b[i], &mul[i], &vector_b[i]);
+                }
+            }
+
+            if (VECTOR_SIZE == 64){
+                for (i = elem; i < remainder; i += VECTOR_SIZE) {
+                    if (i+elem+VECTOR_SIZE > v_size) ;
+                    _vim64_fadds(&vector_b[i], &vector_a[i-elem], &vector_b[i]);
+                    _vim64_fadds(&vector_b[i], &vector_a[i], &vector_b[i]);
+                    _vim64_fadds(&vector_b[i], &vector_a[i-1], &vector_b[i]);
+                    _vim64_fadds(&vector_b[i], &vector_a[i+1], &vector_b[i]);
+                    _vim64_fadds(&vector_b[i], &vector_a[i+elem], &vector_b[i]);
+                    _vim64_fmuls(&vector_b[i], &mul[i], &vector_b[i]);
+                }
             }
         
             #pragma omp for schedule (static)

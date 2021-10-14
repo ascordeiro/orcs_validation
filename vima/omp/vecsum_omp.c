@@ -1,10 +1,9 @@
 #include "../../../intrinsics/vima/vima.hpp"
 #include <omp.h>
 
-#define VECTOR_SIZE 2048
-
 __v32s main(__v32s argc, char const *argv[]) {
     __v32s size = atoi(argv[1]);
+    __v32s VECTOR_SIZE = atoi(argv[2]);
     if (size != 0 && (size & (size - 1)) == 0){
         __v32u v_size = (1024 * 1024 * size) / sizeof(__v32f);
         __v32f *vector_a = (__v32f *)malloc(sizeof(__v32f) * v_size);
@@ -23,8 +22,15 @@ __v32s main(__v32s argc, char const *argv[]) {
             finish = finish + (tid+1) * VECTOR_SIZE;
             if (finish > v_size) finish = v_size;
             printf ("v_size: %d | %d of %d threads, %d to %d\n", v_size, tid, omp_get_num_threads(), start, finish);
-            for (i = start; i < finish; i += VECTOR_SIZE) {
-                _vim2K_fadds(&vector_a[i], &vector_b[i], &vector_c[i]);
+            if (VECTOR_SIZE == 2048){
+                for (i = start; i < finish; i += VECTOR_SIZE) {
+                    _vim2K_fadds(&vector_a[i], &vector_b[i], &vector_c[i]);
+                }
+            }
+            if (VECTOR_SIZE == 64){
+                for (i = start; i < finish; i += VECTOR_SIZE) {
+                    _vim64_fadds(&vector_a[i], &vector_b[i], &vector_c[i]);
+                }
             }
         }
         
