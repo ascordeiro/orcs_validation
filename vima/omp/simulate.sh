@@ -2,10 +2,9 @@
 HOME="/home/srsantos/Experiment"
 SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/vima/omp"
-TRACE_HOME=$CODE_HOME"/traces_new_vima"
+TRACE_HOME=$CODE_HOME"/traces"
 THREADS=(2 4 8 16 32)
-VECTOR_SIZE=(8K)
-CACHE_SIZE=(64)
+CACHE_SIZE=(32)
 DATE_TIME=$(date '+%d%m%Y_%H%M%S');
 
 cd $CODE_HOME
@@ -36,7 +35,7 @@ do
                 CONFIG_FILE="configuration_files/vima_variations/sandy_vima_8K_${k}_${t}cores.cfg"
             fi
                 echo "nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${k}_${DATE_TIME}.txt &"
-                #nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${j}_${k}_${DATE_TIME}.txt &
+                nohup ${COMMAND} -c ${CONFIG_FILE} &> ${CODE_HOME}/resultados/${TRACE}_${j}_${k}_${DATE_TIME}.txt &
                 #echo "${COMMAND} -c ${CONFIG_FILE}"
         done
     done
