@@ -17,14 +17,14 @@ __v32s main(__v32s argc, char const *argv[]) {
         __v32s m_size = sqrt((1024 * 1024 * size) / sizeof(__v32f));
         while (m_size % 128 != 0) m_size++;
         __v32s n_vectors = ceil(((double)m_size/(double)VECTOR_SIZE));
-        __v32f *matrix_a = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
-        __v32f *matrix_b = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
-        __v32f *matrix_c = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
-        __v32f *mask = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE);
-        __v32f *aux_vec = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE);
-        __v32f *aux_vec_a = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE);
-        __v32f *aux_vec_b = (__v32f *)malloc(sizeof(__v32f) * VECTOR_SIZE);
-        __v32f *partial_sum = (__v32f *)malloc(sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
+        __v32f *matrix_a = (__v32f *) aligned_alloc (256, sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
+        __v32f *matrix_b = (__v32f *) aligned_alloc (256, sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
+        __v32f *matrix_c = (__v32f *) aligned_alloc (256, sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
+        __v32f *mask = (__v32f *) aligned_alloc (256, sizeof(__v32f) * VECTOR_SIZE);
+        __v32f *aux_vec = (__v32f *) aligned_alloc (256, sizeof(__v32f) * VECTOR_SIZE);
+        __v32f *aux_vec_a = (__v32f *) aligned_alloc (256, sizeof(__v32f) * VECTOR_SIZE);
+        __v32f *aux_vec_b = (__v32f *) aligned_alloc (256, sizeof(__v32f) * VECTOR_SIZE);
+        __v32f *partial_sum = (__v32f *) aligned_alloc (256, sizeof(__v32f) * m_size * (VECTOR_SIZE * n_vectors));
          for (int i = 0; i < m_size; i++) mask[i] = 1.0;
 
         /*for (int x = 0; x < m_size*VECTOR_SIZE*n_vectors; x++){

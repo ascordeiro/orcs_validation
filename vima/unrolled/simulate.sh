@@ -4,7 +4,7 @@ SIM_HOME=$HOME"/OrCS"
 CODE_HOME=$HOME"/orcs_validation/vima/unrolled"
 TRACE_HOME=$HOME"/orcs_validation/vima/unrolled/traces"
 DATE_TIME=$(date '+%d%m%Y_%H%M%S');
-CACHE_SIZE=(32)
+CACHE_SIZE=(64)
 
 cd $CODE_HOME
 
