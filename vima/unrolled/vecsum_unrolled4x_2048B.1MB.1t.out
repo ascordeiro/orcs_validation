@@ -1,5 +1,0 @@
-0.000000 GCC Threads = 1
-Inserted Output File Name = /home/srsantos/Experiment/orcs_validation/vima/unrolled/traces/vecsum_unrolled4x_2048B.1MB.1t
-Real Static File = /home/srsantos/Experiment/orcs_validation/vima/unrolled/traces/vecsum_unrolled4x_2048B.1MB.1t.tid0.stat.out.gz => READY !
-Real Dynamic File = /home/srsantos/Experiment/orcs_validation/vima/unrolled/traces/vecsum_unrolled4x_2048B.1MB.1t.tid0.dyn.out.gz => READY !
-Real Memory File = /home/srsantos/Experiment/orcs_validation/vima/unrolled/traces/vecsum_unrolled4x_2048B.1MB.1t.tid0.mem.out.gz => READY !
